@@ -1,0 +1,1593 @@
+/* Form */
+.form {
+  position: relative;
+  z-index: 1;
+ 
+  max-width: 500px;
+  margin: 0 auto 100px;
+	min-height: 663px;
+  border-top-left-radius: 3px;
+  border-top-right-radius: 3px;
+  border-bottom-left-radius: 3px;
+  border-bottom-right-radius: 3px;
+  text-align: center;
+  margin-top: 47px;
+}
+.regwrapper
+{
+	background:#fff;
+	box-shadow: 0px 5px 25px 0px rgba(64,64,64,0.3);
+}
+.loginwrapper
+{
+	background:#fff;
+	box-shadow: 0px 5px 25px 0px rgba(64,64,64,0.3);
+}
+.form .thumbnail {
+ /*  background: #003366; */
+   background: #2980b9;
+  width: 120px;
+  height: 120px;
+  margin: 0 auto 0;
+  padding: 32px 30px 50px 30px;
+  border-top-left-radius: 100%;
+  border-top-right-radius: 100%;
+  border-bottom-left-radius: 100%;
+  border-bottom-right-radius: 100%;
+  box-sizing: border-box;
+  margin-top:18px;
+}
+.txtwrap
+{
+	background: #2980b9;
+	padding: 4px 0 15px 0;
+	margin-bottom: 20px;
+}
+.txtwrap h3
+{
+	margin: 10px 0 0 0;
+	font-size: 18px;
+}
+.txtwrap h3,p
+{
+	color:#fff;
+	
+}
+.login-form
+{
+	padding-bottom:30px;
+}
+.login-form .form-group {
+    margin-bottom: 15px;
+    padding: 0 30px 0 30px;
+}
+.form .thumbnail img {
+  display: block;
+  width: 100%;
+}
+.form input {
+  outline: 0;
+  background: #fff;
+  width: 100%;
+  border: 0;
+  margin: 0 0 15px;
+  padding: 10px 15px 10px 37px;
+  border-top-left-radius: 3px;
+  border-top-right-radius: 3px;
+  border-bottom-left-radius: 3px;
+  border-bottom-right-radius: 3px;
+  box-sizing: border-box;
+  font-size: 14px;
+  border: 1px solid #c6c4c5;
+}
+.form button {
+  outline: 0;
+ /*  background: #003366; */
+  background:#2980b9;
+  width: 100%;
+  border: 0;
+  padding: 13px 15px 13px 15px;
+  border-top-left-radius: 3px;
+  border-top-right-radius: 3px;
+  border-bottom-left-radius: 3px;
+  border-bottom-right-radius: 3px;
+  color: #FFFFFF;
+  font-size: 14px;
+  transition: all 0.3 ease;
+  cursor: pointer;
+}
+.form .message {
+  margin: 15px 0 0;
+  color: #b3b3b3;
+  font-size: 12px;
+}
+.form .message a {
+  color: #EF3B3A;
+  text-decoration: none;
+}
+.form .register-form {
+  display: none;
+}
+
+
+.info {
+  /*margin: 50px auto;*/
+  text-align: center;
+  background:#ff0000;
+  width: 100%;
+  height: 57px;
+}
+.info h1 {
+  margin: 0 0 15px;
+  padding: 0;
+  font-size: 36px;
+  font-weight: 300;
+  color: #1a1a1a;
+}
+.info span {
+  color: #4d4d4d;
+  font-size: 12px;
+}
+ .info span a {
+  color: #000000;
+  text-decoration: none;
+}
+ .info span .fa {
+  color: #EF3B3A;
+}
+
+/* END Form */
+/* Demo Purposes */
+body {
+  background: #ccc;
+  font-family: "Roboto", sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+   background-position: center center;
+    height: auto;
+    left: 0;
+    min-height: 100%;
+    min-width: 100%;
+    position: absolute;
+    top: 0;
+    width: auto;
+}
+body:before {
+  content: "";
+
+  top: 0;
+  left: 0;
+  display: block;
+  /*background: rgba(255, 255, 255, 0.8);*/
+  width: 100%;
+  height: 100%;
+}
+
+#video {
+  z-index: -99;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  min-width: 100%;
+  min-height: 100%;
+  width: auto;
+  height: auto;
+  -webkit-transform: translateX(-50%) translateY(-50%);
+  transform: translateX(-50%) translateY(-50%);
+}
+.top-left
+{
+	float:left;
+	padding-left: 40px;
+}
+.login
+{
+	float:right;
+	padding:0 30px 11px 0;
+	background:#003366; 
+	/* background:#2980b9;*/
+	height: auto;
+}
+/* .login-form{
+  padding: 20px 30px 30px 30px;
+} */
+.logo {
+    color: #fff;
+    position: absolute;
+    top: 76px;
+}
+.p0
+{
+	padding:0;
+}
+.pinkbg
+{
+	background:#ff0000;
+}
+#login
+{
+	float:right;
+	margin-top: 7px;
+}
+#login input {
+
+    padding: 5px 40px 5px 41px;
+	border: 1px solid #b3b6b9;
+}
+.leftbar li {
+
+    float: left;
+    list-style-type: none;
+    padding: 0 19px 0 0;
+	color: #fff;
+
+}
+.leftbar {
+
+    margin-top: 17px;
+	float:left;
+}
+.leftbar li .glyphicon{
+color:#fff;
+}
+#login button {
+
+    background: unset;
+    border: 1px solid #f1f1f1;
+    color: #fff;
+    padding: 5px 20px 5px 20px;
+	float:left;
+}
+input:focus {
+  background:#fff;
+  border:1px solid #b7b3b3;
+  box-shadow: 0 0 5px #b7b3b3;
+}
+input, textarea {
+  -webkit-transition: all 0.30s ease-in-out;
+  -moz-transition: all 0.30s ease-in-out;
+  -ms-transition: all 0.30s ease-in-out;
+  -o-transition: all 0.30s ease-in-out;
+  outline: none;
+  padding: 3px 0px 3px 3px;
+  margin: 5px 1px 3px 0px;
+  border: 1px solid #DDDDDD;
+}
+.colorwhite
+{
+	color:#fff;
+}
+.footer
+{
+	background: #222;
+	height: auto;
+}
+.footer p
+{
+	padding: 14px 0 0 0;
+}
+.footer a
+{
+	color:#f8ca40;
+}
+.forgot
+{
+	padding: 7px 0 0 7px;
+}
+#login button:hover
+{
+	border: 1px solid #ccc;
+	background: #f7f4f5;
+	color: #222;
+}
+.login-form .fa-user
+{
+	color: #2980b9;
+	font-size: 16px;
+	position: absolute;
+	left: 39px;
+	top: 290px;
+	z-index: 99999;
+}
+.userlogin
+{
+	padding-bottom:30px;
+}
+.userlogin .form-group
+{
+	padding: 0 30px 0 30px;
+}
+.login-form .fa-mobile
+{
+	color: #2980b9;
+	font-size: 16px;
+	position: absolute;
+	left: 39px;
+	top: 382px;
+	z-index: 99999;
+	font-size: 22px;
+}
+.toggleform input
+{
+	position:relative;
+}
+.login-form .fa-envelope-o
+{
+	color: #2980b9;
+	font-size: 16px;
+	position: absolute;
+	left: 39px;
+	top: 102px;
+	z-index: 99999;
+}
+.login-form .fa-graduation-cap
+{
+	color: #2980b9;
+	font-size: 16px;
+	position: absolute;
+	left: 39px;
+	top: 478px;
+	z-index: 99999;
+}
+.login-form .fa-lock
+{
+	color: #2980b9;
+	font-size: 16px;
+	position: absolute;
+	left: 39px;
+	top: 196px;
+	z-index: 99999;
+}
+.fa
+{
+    z-index: 9 !important;
+}
+button.multiselect
+{
+    background:unset;
+    color:#000;
+    border: 1px solid #c6c4c5
+}
+.login-form .fa-book
+{
+	color: #2980b9;
+	font-size: 16px;
+	position: absolute;
+	left: 39px;
+	top: 564px;
+	z-index: 99999;
+}
+.userlogin .fa-user {
+    color: #2980b9;
+    font-size: 16px;
+    position: absolute;
+    left: 39px;
+    top: 103px;
+    z-index: 99999;
+}
+.userlogin .fa.fa-key
+ {
+    color: #2980b9;
+    font-size: 16px;
+    position: absolute;
+    left: 39px;
+    top: 196px;
+    z-index: 99999;
+}
+.userlogin label {
+    float: left;
+    font-weight: normal;
+    font-size: 12px;
+}
+.userlogin input {
+	position:relative;
+}
+.login-form label
+{
+	float:left;
+	font-weight:normal;
+	font-size: 12px;
+}
+#login .fa.fa-user {
+    position: absolute;
+    top: 21px;
+    left: 55px;
+	color:#2980b9;
+}
+#login .fa.fa-unlock-alt
+{
+    position: absolute;
+    top: 21px;
+    left: 313px;
+	color:#2980b9;
+}
+#login input
+{
+	background:#f4f9fc;
+}
+#login input:focus
+{
+	background:#fff;
+}
+.forgot:hover
+{
+	text-decoration:none;
+	color:#fff;
+}
+.forgot
+{
+	color:#f8ca40;
+	float:left;
+}
+.loginform input
+{
+	position:relative;
+}
+.loginform i
+{
+	position:absolute;
+	z-index:99999;
+}
+.loginslide
+{
+	display:none;
+}
+#flip {
+    padding: 6px 0 6px 0;
+	color:#f8ca40;
+	cursor: pointer;
+}
+#flip:hover {
+	background:#000;
+}
+.loginslide #panel #login
+{
+	padding:0 24px 11px 0;
+}
+.loginslide #panel #login .fa-user
+{
+	top:53px;
+}
+.loginslide #panel #login .fa-unlock-alt
+{
+	top:108px;
+}
+
+
+
+
+
+/*Responsive Design*/
+
+@media(max-width:1024px)
+{
+	#login {
+    float: left;
+    margin-top: 7px;
+    width: 100%;
+}
+
+}
+@media (min-width:960px)
+{
+	.login {
+    float: left;
+    padding: 0;
+    background: #003366;
+    height: auto;
+    width: 100%;
+}
+.loginslide #panel #login {
+	width: 70%!important;
+	margin: 0 auto;
+	float: none;
+}
+
+
+#login input {
+	padding: 5px 40px 5px 34px!important;
+}
+.loginslide #panel #login  input{
+	width:100%;
+}
+.top-left {
+    padding-left: 16px;
+	width: 100%;
+}
+.leftbar {
+    margin-top: 7px;
+    margin-bottom: 2px;
+	width:100%;
+}
+.leftbar li {
+    padding: 0;
+    width: 47%;
+	margin-bottom: 5px;
+}
+
+#login button {
+    float: left;
+}
+.forgot {
+    padding: 6px 0 0 9px;
+}
+.form {
+    max-width: 60%!important;
+    margin: 0 auto !important;
+    float: none;
+    margin-top: 20px !important;
+    margin-bottom: 20px !important;
+}
+#login .fa.fa-user {
+    left: 39px;
+}
+#login .fa.fa-unlock-alt {
+    top: 77px;
+    left: 39px;
+}
+.loginslide
+{
+	display:block;
+}
+.windowlogin
+{
+	display:none;
+}
+}
+
+
+@media (min-width:800px)
+{
+	.login {
+    float: left;
+    padding: 0;
+    background: #003366;
+    height: auto;
+    width: 100%;
+}
+.loginslide #panel #login {
+    padding: 10px 15px 51px 15px;
+	width: 100%!important;
+	margin: 0 auto;
+	float: none;
+}
+
+#login input {
+	padding: 5px 40px 5px 34px!important;
+}
+.loginslide #panel #login  input{
+	width:100%;
+}
+.top-left {
+    padding-left: 16px;
+	width: 100%;
+}
+.leftbar {
+    margin-top: 7px;
+    margin-bottom: 2px;
+	width:100%;
+}
+.leftbar li {
+    padding: 0;
+    width: 47%;
+	margin-bottom: 5px;
+}
+
+#login button {
+    float: left;
+}
+.forgot {
+    padding: 6px 0 0 9px;
+}
+.form {
+	margin: 21px 15px 20px 15px;
+	max-width: 100%;
+}
+#login .fa.fa-user {
+    left: 39px;
+}
+#login .fa.fa-unlock-alt {
+    top: 77px;
+    left: 39px;
+}
+
+.loginslide
+{
+	display:block;
+}
+.windowlogin
+{
+	display:none;
+}
+}
+
+@media (min-width:736px)
+{
+	.login {
+    float: left;
+    padding: 0;
+    background: #003366;
+    height: auto;
+    width: 100%;
+}
+.loginslide #panel #login {
+	width: 70%!important;
+	margin: 0 auto;
+	float: none;
+}
+
+#login input {
+	padding: 5px 40px 5px 34px!important;
+}
+.loginslide #panel #login  input{
+	width:100%;
+}
+.top-left {
+    padding-left: 16px;
+	width: 100%;
+}
+.leftbar {
+    margin-top: 7px;
+    margin-bottom: 2px;
+	width:100%;
+}
+.leftbar li {
+    padding: 0;
+    width: 47%;
+	margin-bottom: 5px;
+}
+
+#login button {
+    float: left;
+}
+.forgot {
+    padding: 6px 0 0 9px;
+}
+.form {
+	margin: 21px 15px 20px 15px;
+	max-width: 100%;
+}
+#login .fa.fa-user {
+    left: 39px;
+}
+#login .fa.fa-unlock-alt {
+    top: 77px;
+    left: 39px;
+}
+.loginslide
+{
+	display:block;
+}
+.windowlogin
+{
+	display:none;
+}
+}
+
+@media (min-width:800px)
+{
+
+.loginslide #panel #login {
+    padding: 10px 15px 51px 15px;
+	width: 100%!important;
+	margin: 0 auto;
+	float: none;
+}
+.loginslide #panel #login .fa-user {
+    left: 54px;
+	top:56px;
+}
+.loginslide #panel #login .fa-unlock-alt
+{
+	left: 305px;
+	top:56px;
+}
+.loginslide #panel #login {
+    padding: 10px 15px 22px 15px!important;
+	}
+
+}
+
+
+@media (min-width:600px)
+{
+	.loginslide #panel #login .fa-user {
+    left: 88px;
+}
+.loginslide #panel #login .fa-unlock-alt
+{
+	left: 88px;
+}
+}
+@media(max-width:960px)
+{
+	.loginslide #panel #login .fa-user {
+    left: 134px;
+	top:56px;
+}
+.loginslide #panel #login .fa-unlock-alt
+{
+	left: 387px;
+	top:113px;
+}
+}
+@media (min-width:667px)
+{
+	.login {
+    float: left;
+    padding: 0;
+    background: #003366;
+    height: auto;
+    width: 100%;
+}
+.loginslide #panel #login {
+    padding: 10px 15px 51px 15px;
+	width: 70%;
+	margin: 0 auto;
+	float: none;
+}
+.loginslide #panel #login .fa-user {
+    left: 100px;
+	top:56px;
+}
+.loginslide #panel #login .fa-unlock-alt
+{
+	left: 92px;
+	top:113px;
+}
+#login input {
+	padding: 5px 40px 5px 32px;
+}
+.loginslide #panel #login  input{
+	width:100%;
+}
+.top-left {
+    padding-left: 16px;
+	width: 100%;
+}
+.leftbar {
+    margin-top: 7px;
+    margin-bottom: 2px;
+	width:100%;
+}
+.leftbar li {
+    padding: 0;
+    width: 47%;
+	margin-bottom: 5px;
+}
+
+#login button {
+    float: left;
+}
+.forgot {
+    padding: 6px 0 0 9px;
+}
+.form {
+	margin: 21px 15px 20px 15px;
+	max-width: 100%;
+}
+#login .fa.fa-user {
+    left: 39px;
+}
+#login .fa.fa-unlock-alt {
+    top: 77px;
+    left: 39px;
+}
+.loginslide
+{
+	display:block;
+}
+.windowlogin
+{
+	display:none;
+}
+}
+
+
+@media (min-width:640px)
+{
+	.login {
+    float: left;
+    padding: 0;
+    background: #003366;
+    height: auto;
+    width: 100%;
+}
+.loginslide #panel #login {
+    padding: 10px 15px 51px 15px;
+	width: 80%;
+	margin: 0 auto;
+	float: none;
+}
+.loginslide #panel #login .fa-user {
+    left: 92px;
+	top:56px;
+}
+.loginslide #panel #login .fa-unlock-alt
+{
+	left: 92px;
+	top:113px;
+}
+#login input {
+	padding: 5px 40px 5px 24px;
+}
+.loginslide #panel #login  input{
+	width:100%;
+}
+.top-left {
+    padding-left: 16px;
+	width: 100%;
+}
+.leftbar {
+    margin-top: 7px;
+    margin-bottom: 2px;
+	width:100%;
+}
+.leftbar li {
+    padding: 0;
+    width: 47%;
+	margin-bottom: 5px;
+}
+
+#login button {
+    float: left;
+}
+.forgot {
+    padding: 6px 0 0 9px;
+}
+.form {
+	margin: 21px 15px 20px 15px;
+	max-width: 100%;
+}
+#login .fa.fa-user {
+    left: 39px;
+}
+#login .fa.fa-unlock-alt {
+    top: 77px;
+    left: 39px;
+}
+.loginslide
+{
+	display:block;
+}
+.windowlogin
+{
+	display:none;
+}
+}
+
+
+@media (min-width:568px)
+{
+	.login {
+    float: left;
+    padding: 0;
+    background: #003366;
+    height: auto;
+    width: 100%;
+}
+.loginslide #panel #login {
+    padding: 10px 15px 51px 15px;
+	width: 80%;
+	margin: 0 auto;
+	float: none;
+}
+.loginslide #panel #login .fa-user {
+    left: 83px;
+	top:56px;
+}
+.loginslide #panel #login .fa-unlock-alt
+{
+	left: 83px;
+	top:113px;
+}
+.loginslide #panel #login  input{
+	width:100%;
+}
+.top-left {
+    padding-left: 16px;
+	width: 100%;
+}
+.leftbar {
+    margin-top: 7px;
+    margin-bottom: 2px;
+	width:100%;
+}
+.leftbar li {
+    padding: 0;
+    width: 47%;
+	margin-bottom: 5px;
+}
+
+#login button {
+    float: left;
+}
+.forgot {
+    padding: 6px 0 0 9px;
+}
+.form {
+	margin: 21px 15px 20px 15px;
+	max-width: 100%;
+}
+#login .fa.fa-user {
+    left: 39px;
+}
+#login .fa.fa-unlock-alt {
+    top: 77px;
+    left: 39px;
+}
+.loginslide
+{
+	display:block;
+}
+.windowlogin
+{
+	display:none;
+}
+}
+
+
+
+@media (min-width:533px)
+{
+	.login {
+    float: left;
+    padding: 0;
+    background: #003366;
+    height: auto;
+    width: 100%;
+}
+.loginslide #panel #login {
+    padding: 10px 15px 51px 15px;
+	width: 80%;
+	margin: 0 auto;
+	float: none;
+}
+.loginslide #panel #login .fa-user {
+    left: 83px;
+	top:56px;
+}
+.loginslide #panel #login .fa-unlock-alt
+{
+	left: 83px;
+	top:113px;
+}
+.loginslide #panel #login  input{
+	width:100%;
+}
+.top-left {
+    padding-left: 16px;
+	width: 100%;
+}
+.leftbar {
+    margin-top: 7px;
+    margin-bottom: 2px;
+	width:100%;
+}
+.leftbar li {
+    padding: 0;
+    width: 47%;
+	margin-bottom: 5px;
+}
+
+#login button {
+    float: left;
+}
+.forgot {
+    padding: 6px 0 0 9px;
+}
+.form {
+	margin: 21px 15px 20px 15px;
+}
+#login .fa.fa-user {
+    left: 39px;
+}
+#login .fa.fa-unlock-alt {
+    top: 77px;
+    left: 39px;
+}
+.loginslide
+{
+	display:block;
+}
+.windowlogin
+{
+	display:none;
+}
+}
+@media(max-width:1920px)
+{
+.top-left {
+    width: 41.66666667%;
+}
+.leftbar li {
+    padding: 11px 21px 0 0;
+    width: auto;
+    margin-bottom: 5px;
+}
+.login {
+	padding: 0 11px 10px 0;
+    width: 58.33333333%;
+}
+.loginslide
+{
+	display:none;
+}
+.windowlogin
+{
+	display:block;
+}
+#login .fa.fa-unlock-alt {
+    top: 22px;
+    left: 291px;
+}
+.form {
+    max-width: 37% !important;
+	min-height: 939px;
+	}
+	#login .fa.fa-user {
+    left: 88px;
+}
+#login .fa.fa-unlock-alt {
+    left: 340px;
+}
+}
+@media(max-width:1680px)
+{
+.top-left {
+    width: 41.66666667%;
+}
+.leftbar li {
+    padding: 11px 21px 0 0;
+    width: auto;
+    margin-bottom: 5px;
+}
+.login {
+	padding: 0 11px 10px 0;
+    width: 58.33333333%;
+}
+.loginslide
+{
+	display:none;
+}
+.windowlogin
+{
+	display:block;
+}
+#login .fa.fa-unlock-alt {
+    top: 22px;
+    left: 291px;
+}
+.form {
+    max-width: 37% !important;
+	min-height: 909px;
+	}
+	#login .fa.fa-user {
+    left: 88px;
+}
+#login .fa.fa-unlock-alt {
+    left: 340px;
+}
+}
+@media(max-width:1600px)
+{
+.top-left {
+    width: 41.66666667%;
+}
+.leftbar li {
+    padding: 11px 21px 0 0;
+    width: auto;
+    margin-bottom: 5px;
+}
+.login {
+	padding: 0 11px 10px 0;
+    width: 58.33333333%;
+}
+.loginslide
+{
+	display:none;
+}
+.windowlogin
+{
+	display:block;
+}
+#login .fa.fa-unlock-alt {
+    top: 22px;
+    left: 291px;
+}
+.form {
+    max-width: 37% !important;
+	min-height: 759px;
+	}
+	#login .fa.fa-user {
+    left: 88px;
+}
+#login .fa.fa-unlock-alt {
+    left: 340px;
+}
+}
+@media(max-width:1440px)
+{
+.top-left {
+    width: 41.66666667%;
+}
+.leftbar li {
+    padding: 11px 21px 0 0;
+    width: auto;
+    margin-bottom: 5px;
+}
+.login {
+	padding: 0 11px 10px 0;
+    width: 58.33333333%;
+}
+.loginslide
+{
+	display:none;
+}
+.windowlogin
+{
+	display:block;
+}
+#login .fa.fa-unlock-alt {
+    top: 22px;
+    left: 291px;
+}
+.form {
+    max-width: 37% !important;
+	min-height: 759px;
+	}
+	#login .fa.fa-user {
+    left: 88px;
+}
+#login .fa.fa-unlock-alt {
+    left: 340px;
+}
+}
+@media(max-width:1366px)
+{
+.top-left {
+    width: 41.66666667%;
+}
+.leftbar li {
+    padding: 11px 21px 0 0;
+    width: auto;
+    margin-bottom: 5px;
+}
+.login {
+	padding: 0 11px 10px 0;
+    width: 58.33333333%;
+}
+.loginslide
+{
+	display:none;
+}
+.windowlogin
+{
+	display:block;
+}
+#login .fa.fa-unlock-alt {
+    top: 22px;
+    left: 291px;
+}
+.form {
+    max-width: 37% !important;
+	min-height: 660px;
+	}
+	#login .fa.fa-user {
+    left: 88px;
+}
+#login .fa.fa-unlock-alt {
+    left: 340px;
+}
+}
+@media(max-width:1280px)
+{
+.top-left {
+    width: 41.66666667%;
+}
+.leftbar li {
+    padding: 11px 21px 0 0;
+    width: auto;
+    margin-bottom: 5px;
+}
+.login {
+	padding: 0 11px 10px 0;
+    width: 58.33333333%;
+}
+.loginslide
+{
+	display:none;
+}
+.windowlogin
+{
+	display:block;
+}
+#login .fa.fa-unlock-alt {
+    top: 22px;
+    left: 291px;
+}
+#login .fa.fa-user {
+    left: 38px;
+}
+.form {
+    max-width: 37% !important;
+	}
+}
+
+@media(max-width:1024px)
+{
+.loginslide
+{
+	display:none;
+}
+.windowlogin
+{
+	display:block;
+}
+.leftbar li {
+    padding: 0 26px 0 0;
+    width: auto;
+    margin-bottom: 5px;
+}
+#login .fa.fa-user {
+    left: 167px;
+}
+#login .fa.fa-unlock-alt {
+    top: 22px;
+    left: 417px;
+}
+.top-left {
+    width: 100%;
+}
+
+.login {
+    width: 100%;
+}
+.form {
+    max-width: 51% !important;
+}
+}
+
+@media(max-width:960px)
+{
+	.loginslide #panel #login .fa-user {
+    left: 135px;
+    top: 56px;
+}
+.loginslide #panel #login .fa-unlock-alt {
+    left: 386px;
+    top: 56px;
+}
+.form {
+    max-width: 70% !important;
+    margin: 0 auto;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+	.leftbar li {
+    padding: 0 25px 0 0;
+    width: auto;
+    margin-bottom: 5px;
+}
+#login .fa.fa-user {
+    left: 134px;
+}
+#login .fa.fa-unlock-alt {
+    left: 386px;
+}
+}
+@media(max-width:800px)
+{
+	.loginslide #panel #login .fa-user {
+    left: 53px;
+}
+.loginslide #panel #login .fa-unlock-alt {
+    left: 306px;
+    top: 56px;
+}
+	.leftbar li {
+    padding: 0 25px 0 0;
+    width: auto;
+    margin-bottom: 5px;
+}
+#login .fa.fa-user {
+    left: 54px;
+}
+#login .fa.fa-unlock-alt {
+    left: 305px;
+}
+.top-left {
+    width: 100%;
+}
+.login {
+    padding: 0;
+    width: 100%;
+}
+.loginslide
+{
+	display:block;
+}
+.windowlogin
+{
+	display:none;
+}
+.form {
+    max-width: 80% !important;
+    margin: 0 auto;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+}
+@media(max-width:768px)
+{
+		.loginslide #panel #login .fa-user {
+    left: 147px;
+}
+.loginslide #panel #login .fa-unlock-alt
+{
+	left: 146px;
+	top: 96px;
+}
+.loginslide #login button,a {
+    margin-top: 10px;
+}
+.loginslide #panel #login .form-group {
+    width: 100%;
+}
+}
+@media(max-width:736px)
+{
+	.loginslide #panel #login .fa-user {
+    left: 135px;
+}
+.loginslide #panel #login .fa-unlock-alt
+{
+	left: 135px;
+	top: 112px;
+}
+.loginslide
+{
+	display:block;
+}
+.windowlogin
+{
+	display:none;
+}
+}
+
+@media(max-width:667px)
+{
+	.loginslide #panel #login .fa-user {
+    left: 87px;
+}
+.loginslide #panel #login .fa-unlock-alt
+{
+	left: 87px;
+	top:111px;
+}
+.loginslide
+{
+	display:block;
+}
+.windowlogin
+{
+	display:none;
+}
+}
+@media(max-width:600px)
+{
+	.loginslide #panel #login .fa-user {
+    left: 87px;
+}
+.loginslide #panel #login .fa-unlock-alt
+{
+	left: 87px;
+	top:111px;
+}
+.loginslide
+{
+	display:block;
+}
+.windowlogin
+{
+	display:none;
+}
+}
+@media (max-width:480px)
+{
+	.login {
+    float: left;
+    padding: 0;
+    background: #003366;
+    height: auto;
+    width: 100%;
+}
+.loginslide #panel #login {
+    padding: 0 15px 15px 15px;
+    float: left;
+    width: 100%;
+}
+.loginslide #panel #login .fa-user {
+    left: 29px;
+}
+.loginslide #panel #login .fa-unlock-alt
+{
+	left: 29px;
+}
+.loginslide #panel #login  input{
+	width:100%;
+}
+.top-left {
+    padding-left: 16px;
+	width: 100%;
+}
+.leftbar {
+    margin-top: 7px;
+    margin-bottom: 2px;
+	width:100%;
+}
+.leftbar li {
+    padding: 0;
+    width: 47%;
+	margin-bottom: 5px;
+}
+
+#login button {
+    float: left;
+}
+.forgot {
+    padding: 6px 0 0 9px;
+}
+/* .form {
+	margin: 21px 15px 20px 15px;
+} */
+#login .fa.fa-user {
+    left: 39px;
+}
+#login .fa.fa-unlock-alt {
+    top: 77px;
+    left: 39px;
+}
+.loginslide
+{
+	display:block;
+}
+.windowlogin
+{
+	display:none;
+}
+}
+
+@media (max-width:375px)
+{
+	.login {
+    float: left;
+    padding: 0;
+    background: #003366;
+    height: auto;
+    width: 100%;
+}
+.top-left {
+    padding-left: 16px;
+}
+.leftbar {
+    margin-top: 7px;
+    margin-bottom: 2px;
+}
+.leftbar li {
+    margin-bottom: 5px;
+	width:100%;
+}
+#login button {
+    float: left;
+}
+.forgot {
+    padding: 6px 0 0 9px;
+}
+.form {
+	margin: 0 auto;
+	margin-top: 20px;
+	margin-bottom: 20px;
+}
+#login .fa.fa-user {
+    left: 39px;
+}
+#login .fa.fa-unlock-alt {
+    top: 77px;
+    left: 39px;
+}
+}
+
+
+@media (max-width:360px)
+{
+	.login {
+    float: left;
+    padding: 0;
+    background: #003366;
+    height: auto;
+    width: 100%;
+}
+.top-left {
+    padding-left: 16px;
+}
+.leftbar {
+    margin-top: 7px;
+    margin-bottom: 2px;
+}
+.leftbar li {
+    margin-bottom: 5px;
+	width:100%;
+}
+#login button {
+    float: left;
+}
+.forgot {
+    padding: 6px 0 0 9px;
+}
+.form {
+	margin: 0 auto;
+	margin-top: 20px;
+	margin-bottom: 20px;
+}
+#login .fa.fa-user {
+    left: 39px;
+}
+#login .fa.fa-unlock-alt {
+    top: 77px;
+    left: 39px;
+}
+}
+
+
+
+@media (max-width:320px)
+{
+	.login {
+    float: left;
+    padding: 0 ;
+    background: #003366;
+    height: auto;
+    width: 100%;
+}
+
+.top-left {
+    padding-left: 16px;
+}
+.leftbar {
+    margin-top: 7px;
+    margin-bottom: 2px;
+}
+.leftbar li {
+    margin-bottom: 5px;
+    width: 100%;
+    padding: 0;
+}
+#login button {
+    float: left;
+}
+.forgot {
+    padding: 6px 0 0 9px;
+}
+.form {
+	margin: 0 auto;
+	margin-top: 20px;
+	margin-bottom: 20px;
+}
+#login .fa.fa-user {
+    left: 39px;
+}
+#login .fa.fa-unlock-alt {
+    top: 77px;
+    left: 39px;
+}
+
+.loginslide
+{
+	display:block;
+}
+.windowlogin
+{
+	display:none;
+}
+}
