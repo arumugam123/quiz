@@ -1,6 +1,6 @@
 	<link href="<?php echo base_url('bootstrap/css/bootstrap.min.css');?>" rel="stylesheet">
 	
-	<!-- custom css -->
+	
 	<link href="<?php echo base_url('css/style.css');?>" rel="stylesheet">
 	<link href="<?php echo base_url('js/jquery-linedtextarea.css');?>" rel="stylesheet">
 	
