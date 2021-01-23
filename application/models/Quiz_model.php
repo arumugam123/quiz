@@ -41,7 +41,7 @@ Class Quiz_model extends CI_Model
 	 $userdata=array(
 	 'quiz_name'=>$this->input->post('quiz_name'),
 	 'description'=>$this->input->post('description'),
-	 'student_level'=>$this->input->post('student_level'),
+	 //'student_level'=>$this->input->post('student_level'),
 	 'start_date'=>strtotime($this->input->post('start_date')),
 	 'end_date'=>strtotime($this->input->post('end_date')),
 	 'duration'=>$this->input->post('duration'),
@@ -62,7 +62,9 @@ Class Quiz_model extends CI_Model
 	 if($this->input->post('certificate_text')){
 		$userdata['certificate_text']=$this->input->post('certificate_text'); 
 	 }
+	// print_r($userdata);exit;
 	  $this->db->insert('savsoft_quiz',$userdata);
+	 // echo $this->db->last_query(); exit;
 	 $quid=$this->db->insert_id();
 	return $quid;
 	 
@@ -292,6 +294,15 @@ function get_qcl($quid){
 	 $query1=$this->db->get('savsoft_qbank');
 	 $quiz1=$query1->row_array();
 	  */
+
+	  $quizQuestionTracking=array(
+		'quid' =>$quid,
+		'qid'  =>$qid,
+		'skill_id' =>$skillid,
+		'sub_skill_id' =>$subskillid,
+		'cat_id' =>$cid
+	);
+	$this->db->insert('quiz_question_tracking',$quizQuestionTracking);
 
 	$new_skill=array();
 	$new_skill[]=$skillid;

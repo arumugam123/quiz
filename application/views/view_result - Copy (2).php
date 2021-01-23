@@ -611,7 +611,7 @@ $Check_Quiz_Skill=$result['skill_id'];
 $Check_Quiz_Skill_Arr=explode(',',$Check_Quiz_Skill);
 //print_r($Check_Quiz_Skill_Arr);
 $Skill_ids=array_filter(array_unique($Check_Quiz_Skill_Arr));
-//print_r($Skill_ids);
+print_r($Skill_ids);
 ?>
   
 					   <table style="display:none;" id="stat1">
@@ -620,42 +620,30 @@ $Skill_ids=array_filter(array_unique($Check_Quiz_Skill_Arr));
 		<th>Skill</th>
 		<th>No of Question</th>
 		<th>Correct</th>
-		<th>Incorrect</th>
-		<th>Unattempted</th>
 		<th>Percentage</th> 	
-		<?php /*	<th> E-Min,Max (in sec)</th> 
+		<th> E-Min,Max (in sec)</th> 
 	
 		<th> I-Min,Max (in sec)</th> 
 		
-		<th> B-Min,Max (in sec)</th>  */?>
+		<th> B-Min,Max (in sec)</th> 
 	
 	<th>Time Taken(in sec)</th>
 	<th>Level</th></tr>
 		<?php
-		 
-$ij=0;
-$j=1;
-		foreach($Skill_ids as $Skill_ids1)
-		{
-			
+		$j=1; 
 
-			$skill_result1=$this->result_model->get_skill_result($result['rid'],$Skill_ids1);
-			$get_incorrect=$this->result_model->get_incorrect_answers($result['rid'],$Skill_ids1);
-		    $get_assigned=$this->result_model->get_assigned_questions($result['quid'],$Skill_ids1);
+		foreach($skill_result as $skill_result1)
+		{
 			?>
 
 			<tr>
-			<td><a href="javascript:show_answer_skill(<?php echo $Skill_ids1;?>);">+</a> <?php echo $j;?></td>
-		<td><?php echo $get_assigned['skill_type'];?></td>
+			<td><a href="javascript:show_answer_skill(<?php echo $skill_result1['skill_id'];?>);">+</a> <?php echo $j;?></td>
+		<td><?php echo $skill_result1['skill_type'];?></td>
 		<td><?php //echo round(($skill_result1['quescnt']/$result['noq'])*100);$skill_result1['quescnt']
 		//echo $result['noq'];
-		echo $get_assigned['qcnt'];
+		echo $skill_result1['quescnt'];
 		?></td>
-		<td><?php if($skill_result1['score']==""){ echo"0"; } else { echo $skill_result1['score'];}?></td>
-		<td><?php echo $get_incorrect['incorr'];?></td>
-		
-		<td><?php echo round($get_assigned['qcnt'] - $skill_result1['score'] - $get_incorrect['incorr']);?></td>
-		
+		<td><?php echo $skill_result1['score'];?></td>
 		<td><?php $percent=($skill_result1['score'] / $skill_result1['quescnt'])*100;
 		echo round($percent) ."%"; 
          
@@ -665,7 +653,7 @@ $j=1;
 
 ?>
 	</td>
-	<?php  $ques_time=explode(',',$skill_result1['questions']);
+	<td><?php  $ques_time=explode(',',$skill_result1['questions']);
 	//print_r($ques_time);
 	$total_time=0;
 	$e_out_actual_time=0;
@@ -709,13 +697,11 @@ $j=1;
 	//echo $ques_time1;	
 	
 
-	} ?>
-	
-<?php /*	<td><?php
+	}
 	echo $e_out_actual_time.",".$e_out_actual_time_max;
 	?></td>
 	<td><?php  echo $i_out_actual_time.",".$i_out_actual_time_max; ?></td>
-	<td><?php  echo $b_out_actual_time.",".$b_out_actual_time_max; ?></td> */?>
+	<td><?php  echo $b_out_actual_time.",".$b_out_actual_time_max; ?></td>
 	<td><?php echo $total_time; ?></td>
 	<td>
 	<?php
@@ -741,135 +727,42 @@ else {
 	</td>
 	<tr>
 	<td colspan="8" style="padding: 15px;padding-left: 30px;">
-	<table style="display:none;" class="inner_skill_result" id="statskill<?php echo $Skill_ids1;?>">
+	<table style="display:none;" class="inner_skill_result" id="statskill<?php echo $skill_result1['skill_id'];?>">
 	<thead>
 	<tr style="background-color: #eae9e9;">
 	<th style="padding:5px;">Sno</th>
 	<th>Category</th>
 	<th>No of Question</th>
 	<th>Correct</th>
-	<th>Inorrect</th>
-	<th>UnAttempted</th>
 	<th>Pecentage</th>
-	<?php /* <th>Min Time(in sec)</th> 
-	<th>Max Time(in sec)</th> */?>
+	<th>Min Time(in sec)</th> 
+	<th>Max Time(in sec)</th> 
 	<th>Time Taken(in sec)</th>
 	</tr></thead>
 	<?php
-	//	$sql_skill_report = $this->db->query("SELECT a.cat_id,sum(a.`score_u`) as score,GROUP_CONCAT(`qid`) as questions,count(a.`qid`) as quescnt,b.category_name from savsoft_answers a, savsoft_category b  where a.cat_id=b.cid  and a.rid='".$result['rid']."' and a.skill_id='".$skill_result1['skill_id']."' group by a.`cat_id`");
-	//	$res_skill_report=$sql_skill_report->result_array();
-
-		$get_assigned_category=$this->result_model->get_assigned_category($result['quid'],$Skill_ids1);
+		$sql_skill_report = $this->db->query("SELECT a.cat_id,sum(a.`score_u`) as score,GROUP_CONCAT(`qid`) as questions,count(a.`qid`) as quescnt,b.category_name from savsoft_answers a, savsoft_category b  where a.cat_id=b.cid  and a.rid='".$result['rid']."' and a.skill_id='".$skill_result1['skill_id']."' group by a.`cat_id`");
+		$res_skill_report=$sql_skill_report->result_array();
 	$i=1; 
-	foreach($get_assigned_category as $res_skill_report1)
+	foreach($res_skill_report as $res_skill_report1)
 	{
-		//echo $res_skill_report1['cat_id'];
-
-		$cat_result1=$this->result_model->get_category_result($result['rid'],$res_skill_report1['cat_id']);
-		$get_cat_incorrect=$this->result_model->get_cat_incorrect_answers($result['rid'],$res_skill_report1['cat_id']);
-		$get_cat_assigned=$this->result_model->get_assigned_cat_questions($result['quid'],$res_skill_report1['cat_id']);
-
 		?>
 
 		<tr>
-		<td><a href="javascript:show_answer_skill1(<?php echo $Skill_ids1;?>);">+</a><?php echo $i;?></td>
-	<td><?php echo $get_cat_assigned['category_name'];?></td>
+		<td><a href="javascript:show_answer_skill1(<?php echo $skill_result1['skill_id'];?>);">+</a><?php echo $i;?></td>
+	<td><?php echo $res_skill_report1['category_name'];?></td>
 	<td><?php 
 	
 	//echo round(($res_skill_report1['quescnt']/$result['noq'])*100);$res_skill_report1['quescnt']
-	echo $get_cat_assigned['qcnt'];
+	echo $res_skill_report1['quescnt'];
 	?></td>
-	<td><?php if($cat_result1['score']==""){ echo "0"; } else { echo $cat_result1['score'];}?></td>
-	<td><?php echo $get_cat_incorrect['incorr'];?></td>
-	<td><?php echo round($get_cat_assigned['qcnt'] - $cat_result1['score'] - $get_cat_incorrect['incorr']);?></td>
-	<td><?php $percent=($cat_result1['score'] / $cat_result1['quescnt'])*100;
-	echo round($percent)."%"; 
+	<td><?php //echo $res_skill_report1['score'];
+	echo $res_skill_report1['score'];
+	?></td>
+	<td><?php $percent=($res_skill_report1['score'] / $res_skill_report1['quescnt'])*100;
+	echo $percent."%"; 
 	?>
 	</td> 
-	<?php  $ques_time=explode(',',$cat_result1['questions']);
-	//print_r($ques_time);
-	$total_time=0;
-	$out_actual_time=0;
-	$out_actual_time_max=0;
-	foreach($ques_time as $ques_time1)
-	{
-		$get_ques_position = $this->db->query("SELECT individual_time,r_qids from savsoft_result 
-		where rid='".$result['rid']."'");
-		$get_ques_position_res=$get_ques_position->row_array();
-		$input_array=explode(',',$get_ques_position_res['r_qids']);
-		$out_position=array_search($ques_time1,$input_array);
-
-		$time_array=explode(',',$get_ques_position_res['individual_time']);
-		$total_time +=$time_array[$out_position];
-
-
-		// actual time 
-		$get_ques_actual_time = $this->db->query("SELECT min_time,max_time from qbank_time_levels 
-		where qid='".$ques_time1."' and student_level='".$result['student_level']."'");
-		$get_ques_actual_time_res=$get_ques_actual_time->row_array();
-		
-		$out_actual_time += $get_ques_actual_time_res['min_time'];
-		$out_actual_time_max += $get_ques_actual_time_res['max_time'];
-		//echo $out_position;
-      // echo $get_ques_position_res['r_qids'];
-	//echo $ques_time1;	
-	
-
-	}?>
-
-<?php /*
-	<td><?php 
-	echo $out_actual_time;
-	?></td>
-	<td><?php echo $out_actual_time_max; ?></td> */?>
-
-	
-	<td><?php echo $total_time; ?></td>
-
-<tr >
-	<td colspan="8" style="padding: 15px;padding-left: 40px;">
-	<table style="display:none;" class="inner_skill_result1" id="statskill1<?php echo $Skill_ids1;?>">
-	<thead>
-	<tr style="background-color: #ececec;">
-	<th style="padding:5px;">Sno</th>
-	<th>Skill</th>
-	<th>No of Question</th>
-	<th>Correct</th>
-	<th>Incorrect</th>
-	<th>UnAttempted</th>
-	<th>Percentage</th> 
-	<?php /* <th>Min Time(in sec)</th> 
-	<th>Max Time(in sec)</th> */?>
-	<th>Time Taken(in sec)</th>
-	</tr>
-	</thead>
-	<?php
-	$i=1; 
-	$get_assigned_subskill=$this->result_model->get_assigned_subskill($result['quid'],$Skill_ids1);
-	//$sql_skill_report = $this->db->query("SELECT a.sub_skill_id,sum(a.`score_u`) as score,GROUP_CONCAT(`qid`) as questions,count(a.`qid`) as quescnt,b.sub_skill_name from savsoft_answers a, savsoft_skills b where a.sub_skill_id=b.sub_skill_id and a.skill_id='".$skill_result1['skill_id']."' and a.rid='".$result['rid']."' group by a.`sub_skill_id`");
-//	$res_skill_report=$sql_skill_report->result_array();
-	foreach($get_assigned_subskill as $res_skill_report1)
-	{
-		$subskill_result1=$this->result_model->get_subskill_result1($result['rid'],$res_skill_report1['sub_skill_id']);
-		$get_subskill_incorrect=$this->result_model->get_subskill_incorrect($result['rid'],$res_skill_report1['sub_skill_id']);
-		$get_subskill_assigned=$this->result_model->get_subskill_assigned($result['quid'],$res_skill_report1['sub_skill_id']);
-		?>
-
-		<tr>
-		<td><?php echo $i;?></td>
-	<td><?php echo $get_subskill_assigned['sub_skill_name'];?></td>
-	<td><?php echo $get_subskill_assigned['qcnt'];
-	//echo round(($res_skill_report1['quescnt']/$result['noq'])*100); $res_skill_report1['quescnt']
-	
-	?></td>
-	<td><?php if($subskill_result1['score']==""){ echo "0"; } else { echo $subskill_result1['score'];}?></td>
-	<td><?php echo $get_subskill_incorrect['incorr'];?></td>
-	<td><?php echo round($get_subskill_assigned['qcnt'] - $subskill_result1['score'] - $get_subskill_incorrect['incorr']);?></td>
-	<td><?php $percent=($subskill_result1['score'] / $subskill_result1['quescnt'])*100;
-	echo round($percent) ."%"; 
-	?>
-	</td> 
-	<?php  $ques_time=explode(',',$subskill_result1['questions']);
+	<td><?php  $ques_time=explode(',',$res_skill_report1['questions']);
 	//print_r($ques_time);
 	$total_time=0;
 	$out_actual_time=0;
@@ -899,12 +792,80 @@ else {
 	
 
 	}
-	?>
-	
-	<?php /* <td><?php
 	echo $out_actual_time;
 	?></td>
-	<td><?php echo $out_actual_time_max; ?></td> */?>
+	<td><?php echo $out_actual_time_max; ?></td>
+	
+	<td><?php echo $total_time; ?></td>
+
+<tr >
+	<td colspan="8" style="padding: 15px;padding-left: 40px;">
+	<table style="display:none;" class="inner_skill_result1" id="statskill1<?php echo $skill_result1['skill_id'];?>">
+	<thead>
+	<tr style="background-color: #ececec;">
+	<th style="padding:5px;">Sno</th>
+	<th>Skill</th>
+	<th>No of Question</th>
+	<th>Correct</th>
+	<th>Percentage</th> 
+	<th>Min Time(in sec)</th> 
+	<th>Max Time(in sec)</th> 
+	<th>Time Taken(in sec)</th>
+	</tr>
+	</thead>
+	<?php
+	$i=1; 
+	$sql_skill_report = $this->db->query("SELECT a.sub_skill_id,sum(a.`score_u`) as score,GROUP_CONCAT(`qid`) as questions,count(a.`qid`) as quescnt,b.sub_skill_name from savsoft_answers a, savsoft_skills b where a.sub_skill_id=b.sub_skill_id and a.skill_id='".$skill_result1['skill_id']."' and a.rid='".$result['rid']."' group by a.`sub_skill_id`");
+	$res_skill_report=$sql_skill_report->result_array();
+	foreach($res_skill_report as $res_skill_report1)
+	{
+		?>
+
+		<tr>
+		<td><?php echo $i;?></td>
+	<td><?php echo $res_skill_report1['sub_skill_name'];?></td>
+	<td><?php echo $res_skill_report1['quescnt'];
+	//echo round(($res_skill_report1['quescnt']/$result['noq'])*100); $res_skill_report1['quescnt']
+	
+	?></td>
+	<td><?php echo $res_skill_report1['score'];?></td>
+	<td><?php $percent=($res_skill_report1['score'] / $res_skill_report1['quescnt'])*100;
+	echo $percent ."%"; 
+	?>
+	</td> 
+	<td><?php  $ques_time=explode(',',$res_skill_report1['questions']);
+	//print_r($ques_time);
+	$total_time=0;
+	$out_actual_time=0;
+	$out_actual_time_max=0;
+	foreach($ques_time as $ques_time1)
+	{
+		$get_ques_position = $this->db->query("SELECT individual_time,r_qids from savsoft_result 
+		where rid='".$result['rid']."'");
+		$get_ques_position_res=$get_ques_position->row_array();
+		$input_array=explode(',',$get_ques_position_res['r_qids']);
+		$out_position=array_search($ques_time1,$input_array);
+
+		$time_array=explode(',',$get_ques_position_res['individual_time']);
+		$total_time +=$time_array[$out_position];
+
+
+		// actual time 
+		$get_ques_actual_time = $this->db->query("SELECT min_time,max_time from qbank_time_levels 
+		where qid='".$ques_time1."' and student_level='".$result['student_level']."'");
+		$get_ques_actual_time_res=$get_ques_actual_time->row_array();
+		
+		$out_actual_time += $get_ques_actual_time_res['min_time'];
+		$out_actual_time_max += $get_ques_actual_time_res['max_time'];
+		//echo $out_position;
+      // echo $get_ques_position_res['r_qids'];
+	//echo $ques_time1;	
+	
+
+	}
+	echo $out_actual_time;
+	?></td>
+	<td><?php echo $out_actual_time_max; ?></td>
 	<td><?php echo $total_time; ?></td>
 
 
@@ -938,8 +899,6 @@ $i++;
 
 <?php
 $j++;
-$ij++;
-		
 		}
 		?>
 		

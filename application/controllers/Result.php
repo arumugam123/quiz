@@ -155,7 +155,7 @@ class Result extends CI_Controller {
      $data['value']=json_encode($value);
 	 
 	 $data['sub_skill_result']=$this->result_model->get_sub_skill_result($rid);
-	 $data['skill_result']=$this->result_model->get_skill_result($rid);
+//	 $data['skill_result']=$this->result_model->get_skill_result($rid);
 	 
 	 
 	
@@ -170,7 +170,7 @@ class Result extends CI_Controller {
     foreach(explode(",",$data['result']['individual_time']) as $key => $val){
 //echo $data['result']['student_level'];
 //echo $q_string[$key];
-		$qu_time=$this->result_model->get_max_time_question($q_string[$key],$data['result']['student_level']);
+		$qu_time=$this->result_model->get_max_time_question($q_string[$key],3);
 	
 	if($val=='0'){
 		$val=1;

@@ -886,10 +886,11 @@ $this->db->query("update savsoft_result set fake_count='$new_fake' where rid='$r
 	return $query->result_array();
 
  }
- function get_skill_result($rid)
+ function get_skill_result($rid,$Skillid)
  {
-	$query=$this->db->query("SELECT a.skill_id,sum(a.`score_u`) as score,count(a.`qid`) as quescnt,GROUP_CONCAT(`qid`) as questions,b.skill_type from savsoft_answers a, skill_config b where a.skill_id=b.sno and a.rid='$rid' group by a.`skill_id` ");	
-	return $query->result_array();
+	
+	$query=$this->db->query("SELECT a.skill_id,sum(a.`score_u`) as score,count(a.`qid`) as quescnt,GROUP_CONCAT(`qid`) as questions,b.skill_type from savsoft_answers a, skill_config b where a.skill_id=b.sno and a.rid='$rid' and a.skill_id='$Skillid' group by a.`skill_id` ");	
+	return $query->row_array();
 
  }
 
@@ -900,7 +901,83 @@ $this->db->query("update savsoft_result set fake_count='$new_fake' where rid='$r
 	
 
  }
- 
+
+ function get_assigned_questions($quid,$skillid)
+ {
+	$query=$this->db->query("SELECT b.skill_type,count(`qid`) as qcnt,a.`skill_id` FROM `quiz_question_tracking` a,skill_config b WHERE a.`quid`='$quid' and a.`skill_id`='$skillid' and a.`skill_id`=b.`sno`");	
+	return $query->row_array();
+	
+
+ }
+ function get_assigned_category($quid,$skillid)
+ {
+	$query=$this->db->query("SELECT b.category_name,count(`qid`) as qcnt,a.`cat_id` FROM `quiz_question_tracking` a,savsoft_category b WHERE a.`quid`='$quid' and a.`skill_id`='$skillid' and a.`cat_id`=b.`cid` group by a.`cat_id`");	
+	return $query->result_array();
+
+ }
+
+ function get_incorrect_answers($quid,$skillid)
+ {
+	 
+	$query=$this->db->query("SELECT count(`qid`) as incorr FROM `savsoft_answers` WHERE `rid`='$quid' and `skill_id`='$skillid' and `score_u`=0;");	
+	return $query->row_array();
+
+ }
+
+ function get_category_result($rid,$catid)
+ {
+	
+	$query=$this->db->query("SELECT a.cat_id,sum(a.`score_u`) as score,count(a.`qid`) as quescnt,GROUP_CONCAT(`qid`) as questions,b.category_name from savsoft_answers a, savsoft_category b where a.cat_id=b.cid and a.rid='$rid' and a.cat_id='$catid' group by a.`cat_id` ");	
+	return $query->row_array();
+
+ }
+ function get_cat_incorrect_answers($quid,$catid)
+ {
+	 
+	$query=$this->db->query("SELECT count(`qid`) as incorr FROM `savsoft_answers` WHERE `rid`='$quid' and `cat_id`='$catid' and `score_u`=0");	
+	return $query->row_array();
+
+ }
+ function get_assigned_cat_questions($quid,$catid)
+ {
+
+	$query=$this->db->query("SELECT b.category_name,count(`qid`) as qcnt,a.`cat_id` FROM `quiz_question_tracking` a,savsoft_category b WHERE a.`quid`='$quid' and a.`cat_id`='$catid' and a.`cat_id`=b.`cid`");	
+	return $query->row_array();
+	
+
+ }
+
+
+ function get_assigned_subskill($quid,$skillid)
+ {
+	$query=$this->db->query("SELECT b.sub_skill_name,count(`qid`) as qcnt,a.`sub_skill_id` FROM `quiz_question_tracking` a,savsoft_skills b WHERE a.`quid`='$quid' and a.`skill_id`='$skillid' and a.`sub_skill_id`=b.`sub_skill_id` group by a.`sub_skill_id`");	
+	return $query->result_array();
+
+ }
+
+ function get_subskill_result1($rid,$subskill)
+ {
+	
+	$query=$this->db->query("SELECT a.sub_skill_id,sum(a.`score_u`) as score,count(a.`qid`) as quescnt,GROUP_CONCAT(`qid`) as questions,b.sub_skill_name from savsoft_answers a, savsoft_skills b where a.sub_skill_id=b.sub_skill_id and a.rid='$rid' and a.sub_skill_id='$subskill' group by a.`cat_id` ");	
+	return $query->row_array();
+
+ }
+ function get_subskill_incorrect($quid,$subskill)
+ {
+	 
+	$query=$this->db->query("SELECT count(`qid`) as incorr FROM `savsoft_answers` WHERE `rid`='$quid' and `sub_skill_id`='$subskill' and `score_u`=0");	
+	return $query->row_array();
+
+ }
+ function get_subskill_assigned($quid,$subskill)
+ {
+
+	$query=$this->db->query("SELECT b.sub_skill_name,count(`qid`) as qcnt,a.`sub_skill_id` FROM `quiz_question_tracking` a,savsoft_skills b WHERE a.`quid`='$quid' and a.`sub_skill_id`='$subskill' and a.`sub_skill_id`=b.`sub_skill_id`");	
+	return $query->row_array();
+	
+
+ }
+
  
 }
 

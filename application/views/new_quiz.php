@@ -77,7 +77,7 @@
 		}
 		?>	
 		
-		<div class="form-group">	 
+		<?php /*<div class="form-group">	 
 					<label for="" class="sr-only">Select Level</label> 
 
 <select name="student_level" id=""  class="form-control" >
@@ -92,7 +92,7 @@
 </select>
 
 				
-			</div>
+			</div> */?>
 		
 		 			<div class="form-group">	 
 					<label for="inputEmail" class="sr-only"><?php echo $this->lang->line('quiz_name');?></label> 

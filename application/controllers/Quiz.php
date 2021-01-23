@@ -52,7 +52,7 @@ class Quiz extends CI_Controller {
 		$data['title']=$this->lang->line('add_new').' '.$this->lang->line('quiz');
 		// fetching group list
 		$data['group_list']=$this->user_model->group_list();
-		$data['level_list']=$this->user_model->level_list();
+	//	$data['level_list']=$this->user_model->level_list();
 		$this->load->view('header',$data);
 		$this->load->view('new_quiz',$data);
 		//$this->load->view('footer',$data);
@@ -502,6 +502,182 @@ if(isset($_FILES['webcam'])){
 	// $data['values1']=json_encode($values1);
 	 
 				if($this->quiz_model->submit_result($data['values'])){
+
+// insert report					
+					$result=$this->result_model->get_result($rid);
+					$data['skill_result']=$this->result_model->get_skill_result($rid);
+				//	print_r($data['skill_result']); exit;
+				$k=0;
+                    foreach($data['skill_result'] as $skill_result1)
+		{
+			
+
+			$ques_time=explode(',',$skill_result1['questions']);
+	//print_r($ques_time);
+	$total_time=0;
+	$out_actual_time=0;
+	$out_actual_time_max=0;
+	foreach($ques_time as $ques_time1)
+	{
+		
+		
+		$get_ques_position = $this->db->query("SELECT individual_time,r_qids from savsoft_result 
+		where rid='".$result['rid']."'");
+		$get_ques_position_res=$get_ques_position->row_array();
+		$input_array=explode(',',$get_ques_position_res['r_qids']);
+		$out_position=array_search($ques_time1,$input_array);
+
+		$time_array=explode(',',$get_ques_position_res['individual_time']);
+		$total_time +=$time_array[$out_position];
+
+
+		// actual time 
+		$get_ques_actual_time = $this->db->query("SELECT min_time,max_time from qbank_time_levels 
+		where qid='".$ques_time1."' and student_level='".$result['student_level']."'");
+		$get_ques_actual_time_res=$get_ques_actual_time->row_array();
+		
+		$out_actual_time += $get_ques_actual_time_res['min_time'];
+		$out_actual_time_max += $get_ques_actual_time_res['max_time'];
+		//echo $out_position;
+      // echo $get_ques_position_res['r_qids'];
+	//echo $ques_time1;	
+	
+
+	}
+	
+	$percent=($skill_result1['score'] / $skill_result1['quescnt'])*100;
+	
+	$results_id=$result['rid'].time().$k;
+
+	$this->db->query("INSERT INTO `skill_result`(`result_id`, `skill_id`, `skill_type`, `quescnt`, `score`, `percent`, `actual_time_min`, `actual_time_max`, `time_taken`, `rid`, `student_level`, `gid`, `uid`) VALUES ($results_id,'".$skill_result1['skill_id']."','".$skill_result1['skill_type']."','".$skill_result1['quescnt']."','".$skill_result1['score']."','".$percent."','".$out_actual_time."','".$out_actual_time_max."','".$total_time."','".$result['rid']."','".$result['student_level']."','".$result['gid']."','".$result['uid']."')");
+	//echo $this->db->last_query; exit;
+
+
+
+
+
+
+// category Report start aaru 16/1/2020
+
+$sql_skill_report = $this->db->query("SELECT a.cat_id,sum(a.`score_u`) as score,GROUP_CONCAT(`qid`) as questions,count(a.`qid`) as quescnt,b.category_name from savsoft_answers a, savsoft_category b  where a.cat_id=b.cid  and a.rid='".$result['rid']."' and a.skill_id='".$skill_result1['skill_id']."' group by a.`cat_id`");
+$res_skill_report=$sql_skill_report->result_array();
+$i=1; 
+foreach($res_skill_report as $res_skill_report1)
+{
+?>
+
+<tr>
+<td><a href="javascript:show_answer_skill1(<?php echo $skill_result1['skill_id'];?>);">+</a><?php echo $i;?></td>
+<td><?php echo $res_skill_report1['category_name'];?></td>
+<td><?php 
+
+//echo round(($res_skill_report1['quescnt']/$result['noq'])*100);$res_skill_report1['quescnt']
+echo $res_skill_report1['quescnt'];
+?></td>
+<td><?php //echo $res_skill_report1['score'];
+echo $res_skill_report1['score'];
+?></td>
+<td><?php $percent=($res_skill_report1['score'] / $res_skill_report1['quescnt'])*100;
+echo $percent."%"; 
+?>
+</td> 
+<td><?php  $ques_time=explode(',',$res_skill_report1['questions']);
+//print_r($ques_time);
+$total_time=0;
+$out_actual_time=0;
+$out_actual_time_max=0;
+foreach($ques_time as $ques_time1)
+{
+$get_ques_position = $this->db->query("SELECT individual_time,r_qids from savsoft_result 
+where rid='".$result['rid']."'");
+$get_ques_position_res=$get_ques_position->row_array();
+$input_array=explode(',',$get_ques_position_res['r_qids']);
+$out_position=array_search($ques_time1,$input_array);
+
+$time_array=explode(',',$get_ques_position_res['individual_time']);
+$total_time +=$time_array[$out_position];
+
+
+// actual time 
+$get_ques_actual_time = $this->db->query("SELECT min_time,max_time from qbank_time_levels 
+where qid='".$ques_time1."' and student_level='".$result['student_level']."'");
+$get_ques_actual_time_res=$get_ques_actual_time->row_array();
+
+$out_actual_time += $get_ques_actual_time_res['min_time'];
+$out_actual_time_max += $get_ques_actual_time_res['max_time'];
+//echo $out_position;
+// echo $get_ques_position_res['r_qids'];
+//echo $ques_time1;	
+
+
+}
+echo $out_actual_time;
+// insert query
+
+$this->db->query("INSERT INTO `category_result`(`result_id`, `cat_id`, `cat_type`, `quescnt`, `score`, `percent`, `actual_time_min`, `actual_time_max`, `time_taken`, `rid`, `student_level`, `gid`, `uid`) VALUES ($results_id,'".$res_skill_report1['cat_id']."','".$res_skill_report1['category_name']."','".$res_skill_report1['quescnt']."','".$res_skill_report1['score']."','".$percent."','".$out_actual_time."','".$out_actual_time_max."','".$total_time."','".$result['rid']."','".$result['student_level']."','".$result['gid']."','".$result['uid']."')");
+
+// category report end
+
+
+// sub skill report start - aaru
+
+$sql_skill_report = $this->db->query("SELECT a.sub_skill_id,sum(a.`score_u`) as score,GROUP_CONCAT(`qid`) as questions,count(a.`qid`) as quescnt,b.sub_skill_name from savsoft_answers a, savsoft_skills b where a.sub_skill_id=b.sub_skill_id and a.skill_id='".$skill_result1['skill_id']."' and a.rid='".$result['rid']."' group by a.`sub_skill_id`");
+$res_skill_report=$sql_skill_report->result_array();
+foreach($res_skill_report as $res_skill_report1)
+{
+
+
+	$percent=($res_skill_report1['score'] / $res_skill_report1['quescnt'])*100;
+	$ques_time=explode(',',$res_skill_report1['questions']);
+	$total_time=0;
+	$out_actual_time=0;
+	$out_actual_time_max=0;
+	foreach($ques_time as $ques_time1)
+	{
+		$get_ques_position = $this->db->query("SELECT individual_time,r_qids from savsoft_result 
+		where rid='".$result['rid']."'");
+		$get_ques_position_res=$get_ques_position->row_array();
+		$input_array=explode(',',$get_ques_position_res['r_qids']);
+		$out_position=array_search($ques_time1,$input_array);
+
+		$time_array=explode(',',$get_ques_position_res['individual_time']);
+		$total_time +=$time_array[$out_position];
+
+
+		// actual time 
+		$get_ques_actual_time = $this->db->query("SELECT min_time,max_time from qbank_time_levels 
+		where qid='".$ques_time1."' and student_level='".$result['student_level']."'");
+		$get_ques_actual_time_res=$get_ques_actual_time->row_array();
+		
+		$out_actual_time += $get_ques_actual_time_res['min_time'];
+		$out_actual_time_max += $get_ques_actual_time_res['max_time'];
+		//echo $out_position;
+      // echo $get_ques_position_res['r_qids'];
+	//echo $ques_time1;	
+	
+
+	}
+	echo $out_actual_time;
+
+	$this->db->query("INSERT INTO `sub_skill_result`(`result_id`, `sub_skill_id`, `sub_skill_name`, `quescnt`, `score`, `percent`, `actual_time_min`, `actual_time_max`, `time_taken`, `rid`, `student_level`, `gid`, `uid`) VALUES ($results_id,'".$res_skill_report1['sub_skill_id']."','".$res_skill_report1['sub_skill_name']."','".$res_skill_report1['quescnt']."','".$res_skill_report1['score']."','".$percent."','".$out_actual_time."','".$out_actual_time_max."','".$total_time."','".$result['rid']."','".$result['student_level']."','".$result['gid']."','".$result['uid']."')");
+
+}
+// subskill report end 
+
+		}
+$k++;
+	}
+
+//end report		
+
+//echo "www";exit;
+
+
+
+
+
+
+
                         $this->session->set_flashdata('message', "<div class='alert alert-success'>".$this->lang->line('quiz_submit_successfully')." </div>");
 					}
 					else
