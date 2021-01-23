@@ -609,7 +609,7 @@ if($result['gen_certificate']=='1'){
 
 $Check_Quiz_Skill=$result['skill_id'];
 $Check_Quiz_Skill_Arr=explode(',',$Check_Quiz_Skill);
-//print_r($Check_Quiz_Skill_Arr);
+
 $Skill_ids=array_filter(array_unique($Check_Quiz_Skill_Arr));
 //print_r($Skill_ids);
 ?>
