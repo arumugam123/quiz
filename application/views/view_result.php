@@ -611,7 +611,7 @@ $Check_Quiz_Skill=$result['skill_id'];
 $Check_Quiz_Skill_Arr=explode(',',$Check_Quiz_Skill);
 
 $Skill_ids=array_filter(array_unique($Check_Quiz_Skill_Arr));
-//print_r($Skill_ids);
+
 ?>
   
 					   <table style="display:none;" id="stat1">
