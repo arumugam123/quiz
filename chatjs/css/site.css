@@ -1,0 +1,102 @@
+﻿.glyphicon
+{
+    margin-right:4px !important; /*override*/
+}
+
+.pagination .glyphicon
+{
+    margin-right:0px !important; /*override*/
+}
+
+.pagination a
+{
+    color:#555;
+}
+
+.panel ul
+{
+    padding:0px;
+    margin:0px;
+    list-style:none;
+}
+
+.news-item
+{
+    padding:4px 4px;
+    margin:0px;
+    border-bottom:1px dotted #555; 
+	border-top:unset!important;
+}
+.newstick .panel {
+border:unset;
+}
+.demo1  .news-item  tbody tr td
+{
+	border-top:unset!important;
+	text-align:left;
+	padding-top:0;
+	color:#222;
+}
+.news-item h3
+{
+	font-size:13px;
+	color: #0d5189;
+	font-weight:600;
+	margin:0;
+}
+.news-item .event_readmore
+{
+	color:#16A085;
+	font-size:11px;
+	margin-top:12px;
+	float:left;
+}
+
+.demo1  .news-item table
+{
+	margin-bottom:0;
+}
+.newstick .panel-footer {
+    background-color: #00cb62;
+	}
+	.demo1  .news-item img
+	{
+		width:54px!important;
+		height:44px;
+	}
+.newstick .panel-footer	.pagination > li > a
+{
+	padding: 0px 12px!important;
+}
+.newstick  .panel-footer {
+    padding: 6px 15px;
+	}
+	.txtuppercase
+	{
+		text-transform:uppercase;
+	}
+	.news-item:hover
+	{
+		background:#495a6c;
+		cursor:pointer;
+	}
+	.news-item:hover table tr td
+	{
+		color:#fff;
+	}
+	.news-item:hover table tr td h3
+	{
+		color:#0bea73;
+	}
+	.news-item:hover table tr td a
+	{
+		color:#0bea73;
+	}
+	.news-item table tr td a:hover
+	{
+		color:#f9b981;
+	}
+	.news-item table tr td a:hover h3
+	{
+		color:#e67e22!important;
+	}
