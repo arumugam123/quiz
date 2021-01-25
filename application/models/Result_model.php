@@ -501,6 +501,14 @@ $this->db->where( $where );
    $row  = $query->row();
     return $row->quid;
  } 
+ function get_current_quid($rid)
+ {
+	 $this->db->select('quid');
+	 $this->db->where("savsoft_result.rid",$rid);
+ $query = $this->db->get('savsoft_result');	 
+   $row  = $query->row();
+    return $row->quid;
+ } 
  function get_current_quiz_cat($quid)
  {
 	 $this->db->select('cids');
@@ -904,7 +912,15 @@ $this->db->query("update savsoft_result set fake_count='$new_fake' where rid='$r
 
  function get_assigned_questions($quid,$skillid)
  {
-	$query=$this->db->query("SELECT b.skill_type,count(`qid`) as qcnt,a.`skill_id` FROM `quiz_question_tracking` a,skill_config b WHERE a.`quid`='$quid' and a.`skill_id`='$skillid' and a.`skill_id`=b.`sno`");	
+	$query=$this->db->query("SELECT b.skill_type,count(`qid`) as qcnt,a.`skill_id`,group_concat(`qid`) as qs1 FROM `quiz_question_tracking` a,skill_config b WHERE a.`quid`='$quid' and a.`skill_id`='$skillid' and a.`skill_id`=b.`sno`");	
+	return $query->row_array();
+	
+
+ }
+
+ function get_assigned_skills($quid)
+ {
+	$query=$this->db->query("SELECT group_concat(`skill_id`) as skillids FROM `quiz_question_tracking` WHERE `quid`='$quid'");	
 	return $query->row_array();
 	
 
@@ -941,7 +957,7 @@ $this->db->query("update savsoft_result set fake_count='$new_fake' where rid='$r
  function get_assigned_cat_questions($quid,$catid)
  {
 
-	$query=$this->db->query("SELECT b.category_name,count(`qid`) as qcnt,a.`cat_id` FROM `quiz_question_tracking` a,savsoft_category b WHERE a.`quid`='$quid' and a.`cat_id`='$catid' and a.`cat_id`=b.`cid`");	
+	$query=$this->db->query("SELECT b.category_name,count(`qid`) as qcnt,a.`cat_id`,group_concat(`qid`) as qs1 FROM `quiz_question_tracking` a,savsoft_category b WHERE a.`quid`='$quid' and a.`cat_id`='$catid' and a.`cat_id`=b.`cid`");	
 	return $query->row_array();
 	
 
@@ -972,7 +988,7 @@ $this->db->query("update savsoft_result set fake_count='$new_fake' where rid='$r
  function get_subskill_assigned($quid,$subskill)
  {
 
-	$query=$this->db->query("SELECT b.sub_skill_name,count(`qid`) as qcnt,a.`sub_skill_id` FROM `quiz_question_tracking` a,savsoft_skills b WHERE a.`quid`='$quid' and a.`sub_skill_id`='$subskill' and a.`sub_skill_id`=b.`sub_skill_id`");	
+	$query=$this->db->query("SELECT b.sub_skill_name,count(`qid`) as qcnt,a.`sub_skill_id`,group_concat(`qid`) as qs1  FROM `quiz_question_tracking` a,savsoft_skills b WHERE a.`quid`='$quid' and a.`sub_skill_id`='$subskill' and a.`sub_skill_id`=b.`sub_skill_id`");	
 	return $query->row_array();
 	
 

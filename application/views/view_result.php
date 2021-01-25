@@ -589,12 +589,57 @@ if($result['gen_certificate']=='1'){
 					   <th style="min-width: 73px; text-align:center;background: lightgrey;">Time Alloted(min)</th>
 					   <th style="min-width: 73px; text-align:center;background: lightgrey;">Time Taken(min)</th>
 					   <th style="min-width: 73px; text-align:center;background: slateblue;     color: white;">Percentage Correct</th>
-					   
+					   <th style="min-width: 73px; text-align:center;background: slateblue;     color: white;">Level</th>
 					   <tr>
 					   </thead>
 					   
 					   <tbody>
 					   <tr>
+					   
+
+					   <?php  
+	$ques_time=explode(',',$result['qids']);
+//	print_r($ques_time);
+	$total_time=0;
+	$e_out_actual_time=0;
+	$i_out_actual_time=0;
+	$b_out_actual_time=0;
+	$e_out_actual_time_max=0;
+	$i_out_actual_time_max=0;
+	$b_out_actual_time_max=0;
+	foreach($ques_time as $ques_time1)
+	{
+		$get_ques_position = $this->db->query("SELECT individual_time,r_qids from savsoft_result 
+		where rid='".$result['rid']."'");
+		$get_ques_position_res=$get_ques_position->row_array();
+		$input_array=explode(',',$get_ques_position_res['r_qids']);
+		$out_position=array_search($ques_time1,$input_array);
+
+		$time_array=explode(',',$get_ques_position_res['individual_time']);
+		$total_time +=$time_array[$out_position];
+
+
+	$get_ques_actual_time=$this->db->query("SELECT min_time,max_time,student_level from qbank_time_levels where qid='".$ques_time1."' order by `student_level` desc");
+		
+	
+	$get_ques_actual_time_res=$get_ques_actual_time->result_array();
+		
+
+		$e_out_actual_time += $get_ques_actual_time_res[0]['min_time'];
+		$e_out_actual_time_max += $get_ques_actual_time_res[0]['max_time'];
+
+		$i_out_actual_time += $get_ques_actual_time_res[1]['min_time'];
+		$i_out_actual_time_max += $get_ques_actual_time_res[1]['max_time'];
+
+		$b_out_actual_time += $get_ques_actual_time_res[2]['min_time'];
+		$b_out_actual_time_max += $get_ques_actual_time_res[2]['max_time'];
+		//echo $out_position;
+      // echo $get_ques_position_res['r_qids'];
+	//echo $ques_time1;	
+	
+
+	} ?>
+
 					   <td> <a href="javascript:show_answer_table();">+</a>  <?php echo $rowcount;?><?php echo $result['quiz_name'];?></td>
 					   <td style="text-align:center;background: lightgrey; font-weight:bold;"><?php echo $result['noq'];?></td>
 					  
@@ -604,11 +649,39 @@ if($result['gen_certificate']=='1'){
 					   <td style="text-align:center;background: lightgrey; font-weight:bold;"><?php echo $result['duration']; ?></td>
 					   <td style="text-align:center;background: lightgrey; font-weight:bold;"><?php echo round($result['total_time']/60);?></td>
 					   <td style="text-align:center;background: slateblue;color: white; font-weight:bold;"><?php echo round($result['percentage_obtained']);?>%</td>
+					  <td> <?php
+					//  echo $total_time=$result['duration'];
+				//	echo $b_out_actual_time;
+				//echo $total_time;
+	if(round($result['percentage_obtained']) >= $result['pass_percentage'])
+{
+	if($total_time >= $e_out_actual_time && $total_time <= $e_out_actual_time_max)
+	{
+		echo "E";
+	}
+	else if($total_time >= $i_out_actual_time && $total_time <= $i_out_actual_time_max)
+	{
+		echo "I";	
+	}
+	else if($total_time >= $b_out_actual_time && $total_time <= $b_out_actual_time_max)
+	{
+		echo "B";
+	}
+	else {
 
+		echo "E";
+	}
+}
+else {
+	echo "F";
+}
+	?>
+</td>
 					<?php
-
-$Check_Quiz_Skill=$result['skill_id'];
-$Check_Quiz_Skill_Arr=explode(',',$Check_Quiz_Skill);
+				
+ $get_assigned_skills=$this->result_model->get_assigned_skills($result['quid']);
+//$Check_Quiz_Skill=$result['skill_id'];
+$Check_Quiz_Skill_Arr=explode(',',$get_assigned_skills['skillids']);
 
 $Skill_ids=array_filter(array_unique($Check_Quiz_Skill_Arr));
 
@@ -623,14 +696,14 @@ $Skill_ids=array_filter(array_unique($Check_Quiz_Skill_Arr));
 		<th>Incorrect</th>
 		<th>Unattempted</th>
 		<th>Percentage</th> 	
-		<?php /*	<th> E-Min,Max (in sec)</th> 
+			<th> E-Min,Max (in sec)</th> 
 	
 		<th> I-Min,Max (in sec)</th> 
 		
-		<th> B-Min,Max (in sec)</th>  */?>
+		<th> B-Min,Max (in sec)</th>  
 	
 	<th>Time Taken(in sec)</th>
-	<th>Level</th></tr>
+	
 		<?php
 		 
 $ij=0;
@@ -665,8 +738,8 @@ $j=1;
 
 ?>
 	</td>
-	<?php  $ques_time=explode(',',$skill_result1['questions']);
-	//print_r($ques_time);
+	<?php  $ques_time=explode(',',$get_assigned['qs1']);
+//	print_r($ques_time);
 	$total_time=0;
 	$e_out_actual_time=0;
 	$i_out_actual_time=0;
@@ -685,10 +758,6 @@ $j=1;
 		$time_array=explode(',',$get_ques_position_res['individual_time']);
 		$total_time +=$time_array[$out_position];
 
-
-		// actual time 
-	//	$get_ques_actual_time = $this->db->query("SELECT min_time,max_time from qbank_time_levels 
-	//	where qid='".$ques_time1."' and student_level='".$result['student_level']."'");
 
 	$get_ques_actual_time=$this->db->query("SELECT min_time,max_time,student_level from qbank_time_levels where qid='".$ques_time1."' order by `student_level` desc");
 		
@@ -711,36 +780,15 @@ $j=1;
 
 	} ?>
 	
-<?php /*	<td><?php
+	<td><?php
 	echo $e_out_actual_time.",".$e_out_actual_time_max;
 	?></td>
 	<td><?php  echo $i_out_actual_time.",".$i_out_actual_time_max; ?></td>
-	<td><?php  echo $b_out_actual_time.",".$b_out_actual_time_max; ?></td> */?>
+	<td><?php  echo $b_out_actual_time.",".$b_out_actual_time_max; ?></td>
 	<td><?php echo $total_time; ?></td>
-	<td>
-	<?php
-	if($percent >=$result['pass_percentage'])
-{
-	if($total_time >= $e_out_actual_time && $total_time <= $e_out_actual_time_max)
-	{
-		echo "E";
-	}
-	else if($total_time >= $i_out_actual_time && $total_time <= $i_out_actual_time_max)
-	{
-		echo "I";	
-	}
-	else if($total_time >= $b_out_actual_time && $total_time <= $b_out_actual_time_max)
-	{
-		echo "B";
-	}
-}
-else {
-	echo "F";
-}
-	?>
-	</td>
+
 	<tr>
-	<td colspan="8" style="padding: 15px;padding-left: 30px;">
+	<td colspan="12" style="padding: 15px;padding-left: 30px;">
 	<table style="display:none;" class="inner_skill_result" id="statskill<?php echo $Skill_ids1;?>">
 	<thead>
 	<tr style="background-color: #eae9e9;">
@@ -751,8 +799,11 @@ else {
 	<th>Inorrect</th>
 	<th>UnAttempted</th>
 	<th>Pecentage</th>
-	<?php /* <th>Min Time(in sec)</th> 
-	<th>Max Time(in sec)</th> */?>
+	<th> E-Min,Max (in sec)</th> 
+	
+	<th> I-Min,Max (in sec)</th> 
+	
+	<th> B-Min,Max (in sec)</th>  
 	<th>Time Taken(in sec)</th>
 	</tr></thead>
 	<?php
@@ -786,11 +837,15 @@ else {
 	echo round($percent)."%"; 
 	?>
 	</td> 
-	<?php  $ques_time=explode(',',$cat_result1['questions']);
+	<?php  $ques_time=explode(',',$get_cat_assigned['qs1']);
 	//print_r($ques_time);
 	$total_time=0;
-	$out_actual_time=0;
-	$out_actual_time_max=0;
+	$e_out_actual_time=0;
+	$i_out_actual_time=0;
+	$b_out_actual_time=0;
+	$e_out_actual_time_max=0;
+	$i_out_actual_time_max=0;
+	$b_out_actual_time_max=0;
 	foreach($ques_time as $ques_time1)
 	{
 		$get_ques_position = $this->db->query("SELECT individual_time,r_qids from savsoft_result 
@@ -803,31 +858,36 @@ else {
 		$total_time +=$time_array[$out_position];
 
 
-		// actual time 
-		$get_ques_actual_time = $this->db->query("SELECT min_time,max_time from qbank_time_levels 
-		where qid='".$ques_time1."' and student_level='".$result['student_level']."'");
-		$get_ques_actual_time_res=$get_ques_actual_time->row_array();
+	$get_ques_actual_time=$this->db->query("SELECT min_time,max_time,student_level from qbank_time_levels where qid='".$ques_time1."' order by `student_level` desc");
 		
-		$out_actual_time += $get_ques_actual_time_res['min_time'];
-		$out_actual_time_max += $get_ques_actual_time_res['max_time'];
-		//echo $out_position;
-      // echo $get_ques_position_res['r_qids'];
-	//echo $ques_time1;	
+	
+	$get_ques_actual_time_res=$get_ques_actual_time->result_array();
+		
+
+		$e_out_actual_time += $get_ques_actual_time_res[0]['min_time'];
+		$e_out_actual_time_max += $get_ques_actual_time_res[0]['max_time'];
+
+		$i_out_actual_time += $get_ques_actual_time_res[1]['min_time'];
+		$i_out_actual_time_max += $get_ques_actual_time_res[1]['max_time'];
+
+		$b_out_actual_time += $get_ques_actual_time_res[2]['min_time'];
+		$b_out_actual_time_max += $get_ques_actual_time_res[2]['max_time'];
 	
 
 	}?>
 
-<?php /*
-	<td><?php 
-	echo $out_actual_time;
+
+<td><?php
+	echo $e_out_actual_time.",".$e_out_actual_time_max;
 	?></td>
-	<td><?php echo $out_actual_time_max; ?></td> */?>
+	<td><?php  echo $i_out_actual_time.",".$i_out_actual_time_max; ?></td>
+	<td><?php  echo $b_out_actual_time.",".$b_out_actual_time_max; ?></td>
 
 	
 	<td><?php echo $total_time; ?></td>
 
 <tr >
-	<td colspan="8" style="padding: 15px;padding-left: 40px;">
+	<td colspan="12" style="padding: 15px;padding-left: 40px;">
 	<table style="display:none;" class="inner_skill_result1" id="statskill1<?php echo $Skill_ids1;?>">
 	<thead>
 	<tr style="background-color: #ececec;">
@@ -838,8 +898,11 @@ else {
 	<th>Incorrect</th>
 	<th>UnAttempted</th>
 	<th>Percentage</th> 
-	<?php /* <th>Min Time(in sec)</th> 
-	<th>Max Time(in sec)</th> */?>
+	<th> E-Min,Max (in sec)</th> 
+	
+	<th> I-Min,Max (in sec)</th> 
+	
+	<th> B-Min,Max (in sec)</th>  
 	<th>Time Taken(in sec)</th>
 	</tr>
 	</thead>
@@ -869,11 +932,15 @@ else {
 	echo round($percent) ."%"; 
 	?>
 	</td> 
-	<?php  $ques_time=explode(',',$subskill_result1['questions']);
+	<?php  $ques_time=explode(',',$get_subskill_assigned['qs1']);
 	//print_r($ques_time);
 	$total_time=0;
-	$out_actual_time=0;
-	$out_actual_time_max=0;
+	$e_out_actual_time=0;
+	$i_out_actual_time=0;
+	$b_out_actual_time=0;
+	$e_out_actual_time_max=0;
+	$i_out_actual_time_max=0;
+	$b_out_actual_time_max=0;
 	foreach($ques_time as $ques_time1)
 	{
 		$get_ques_position = $this->db->query("SELECT individual_time,r_qids from savsoft_result 
@@ -886,25 +953,30 @@ else {
 		$total_time +=$time_array[$out_position];
 
 
-		// actual time 
-		$get_ques_actual_time = $this->db->query("SELECT min_time,max_time from qbank_time_levels 
-		where qid='".$ques_time1."' and student_level='".$result['student_level']."'");
-		$get_ques_actual_time_res=$get_ques_actual_time->row_array();
+	$get_ques_actual_time=$this->db->query("SELECT min_time,max_time,student_level from qbank_time_levels where qid='".$ques_time1."' order by `student_level` desc");
 		
-		$out_actual_time += $get_ques_actual_time_res['min_time'];
-		$out_actual_time_max += $get_ques_actual_time_res['max_time'];
-		//echo $out_position;
-      // echo $get_ques_position_res['r_qids'];
-	//echo $ques_time1;	
+	
+	$get_ques_actual_time_res=$get_ques_actual_time->result_array();
+		
+
+		$e_out_actual_time += $get_ques_actual_time_res[0]['min_time'];
+		$e_out_actual_time_max += $get_ques_actual_time_res[0]['max_time'];
+
+		$i_out_actual_time += $get_ques_actual_time_res[1]['min_time'];
+		$i_out_actual_time_max += $get_ques_actual_time_res[1]['max_time'];
+
+		$b_out_actual_time += $get_ques_actual_time_res[2]['min_time'];
+		$b_out_actual_time_max += $get_ques_actual_time_res[2]['max_time'];
 	
 
 	}
 	?>
 	
-	<?php /* <td><?php
-	echo $out_actual_time;
+	<td><?php
+	echo $e_out_actual_time.",".$e_out_actual_time_max;
 	?></td>
-	<td><?php echo $out_actual_time_max; ?></td> */?>
+	<td><?php  echo $i_out_actual_time.",".$i_out_actual_time_max; ?></td>
+	<td><?php  echo $b_out_actual_time.",".$b_out_actual_time_max; ?></td>
 	<td><?php echo $total_time; ?></td>
 
 

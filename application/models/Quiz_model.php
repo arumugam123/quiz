@@ -710,6 +710,52 @@ function saved_answers($rid){
 	$quiz=$query->row_array(); 
 	$score_ind=explode(',',$quiz['score_individual']);
 	$r_qids=explode(',',$quiz['r_qids']);
+
+	// grade start
+
+
+	$ques_time=explode(',',$quiz['r_qids']);
+//	print_r($ques_time);
+	$total_time1=0;
+	$e_out_actual_time=0;
+	$i_out_actual_time=0;
+	$b_out_actual_time=0;
+	$e_out_actual_time_max=0;
+	$i_out_actual_time_max=0;
+	$b_out_actual_time_max=0;
+	foreach($ques_time as $ques_time1)
+	{
+		$get_ques_position = $this->db->query("SELECT individual_time,r_qids from savsoft_result 
+		where rid='".$result['rid']."'");
+		$get_ques_position_res=$get_ques_position->row_array();
+		$input_array=explode(',',$get_ques_position_res['r_qids']);
+		$out_position=array_search($ques_time1,$input_array);
+
+		$time_array=explode(',',$get_ques_position_res['individual_time']);
+		$total_time1 +=$time_array[$out_position];
+
+
+	$get_ques_actual_time=$this->db->query("SELECT min_time,max_time,student_level from qbank_time_levels where qid='".$ques_time1."' order by `student_level` desc");
+		
+	
+	$get_ques_actual_time_res=$get_ques_actual_time->result_array();
+		
+
+		$e_out_actual_time += $get_ques_actual_time_res[0]['min_time'];
+		$e_out_actual_time_max += $get_ques_actual_time_res[0]['max_time'];
+
+		$i_out_actual_time += $get_ques_actual_time_res[1]['min_time'];
+		$i_out_actual_time_max += $get_ques_actual_time_res[1]['max_time'];
+
+		$b_out_actual_time += $get_ques_actual_time_res[2]['min_time'];
+		$b_out_actual_time_max += $get_ques_actual_time_res[2]['max_time'];
+		//echo $out_position;
+      // echo $get_ques_position_res['r_qids'];
+	//echo $ques_time1;	
+	
+
+	}
+	//grade end
 	$qids_perf=array();
 	$marks=0;
 	$correct_score=$quiz['correct_score'];
@@ -741,6 +787,29 @@ function saved_answers($rid){
 		$qr=$this->lang->line('fail');
 		
 	}
+
+	if($percentage_obtained >= 50)
+	{
+		if($total_time1 >= $e_out_actual_time && $total_time1 <= $e_out_actual_time_max)
+		{
+			$level="E";
+		}
+		else if($total_time1 >= $i_out_actual_time && $total_time1 <= $i_out_actual_time_max)
+		{
+			$level="I";	
+		}
+		else if($total_time1 >= $b_out_actual_time && $total_time1 <= $b_out_actual_time_max)
+		{
+			$level="B";
+		}
+		else {
+	
+			$level="E";
+		}
+	}
+	else {
+		$level="F";
+	}
 		 
 	 $userdata=array(
 	  'total_time'=>$total_time,
@@ -748,8 +817,9 @@ function saved_answers($rid){
 	  'score_obtained'=>$marks,
 	 'percentage_obtained'=>$percentage_obtained,
 	 'sec_result'=>$secres,
-	 'student_level'=>$quiz['student_level'],
+	 //'student_level'=>$quiz['student_level'],
 	// 'sec_percentage'=>$secresper,
+	'ans_grade'=>$level,
 	 'manual_valuation'=>$manual_valuation
 	 );
 	 if($manual_valuation == 1){

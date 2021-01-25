@@ -468,7 +468,7 @@ if(isset($_FILES['webcam'])){
 	 
 	  $rid=$this->session->userdata('rid');
 	  $uid=$this->session->userdata('uid');
-	 
+	  $gid=$this->session->userdata('gid');
 	  $ind_result = $this->result_model->get_ind_cat($rid,$uid);
 	  $get_current_quiz1 = $this->result_model->get_current_quiz($rid);
 
@@ -503,26 +503,39 @@ if(isset($_FILES['webcam'])){
 	 
 				if($this->quiz_model->submit_result($data['values'])){
 
-// insert report					
-					$result=$this->result_model->get_result($rid);
-					$data['skill_result']=$this->result_model->get_skill_result($rid);
-				//	print_r($data['skill_result']); exit;
-				$k=0;
-                    foreach($data['skill_result'] as $skill_result1)
-		{
-			
+// insert report		
 
-			$ques_time=explode(',',$skill_result1['questions']);
+$current_quiz=$this->result_model->get_current_quiz($rid);
+$get_assigned_skills=$this->result_model->get_assigned_skills($current_quiz);
+//echo $rid; echo $current_quiz; echo $get_assigned_skills['skillids'];exit;
+$Check_Quiz_Skill=$get_assigned_skills['skillids'];
+$Check_Quiz_Skill_Arr=explode(',',$Check_Quiz_Skill);
+
+$Skill_ids=array_filter(array_unique($Check_Quiz_Skill_Arr));
+
+$ij=0;
+$j=1;
+foreach($Skill_ids as $Skill_ids1)
+{
+	$skill_result1=$this->result_model->get_skill_result($rid,$Skill_ids1);
+	$get_incorrect=$this->result_model->get_incorrect_answers($rid,$Skill_ids1);
+	$get_assigned=$this->result_model->get_assigned_questions($current_quiz,$Skill_ids1);
+
+	$ques_time=explode(',',$get_assigned['qs1']);
 	//print_r($ques_time);
 	$total_time=0;
-	$out_actual_time=0;
-	$out_actual_time_max=0;
+	$e_out_actual_time=0;
+	$i_out_actual_time=0;
+	$b_out_actual_time=0;
+	$e_out_actual_time_max=0;
+	$i_out_actual_time_max=0;
+	$b_out_actual_time_max=0;
 	foreach($ques_time as $ques_time1)
 	{
 		
 		
 		$get_ques_position = $this->db->query("SELECT individual_time,r_qids from savsoft_result 
-		where rid='".$result['rid']."'");
+		where rid='".$rid."'");
 		$get_ques_position_res=$get_ques_position->row_array();
 		$input_array=explode(',',$get_ques_position_res['r_qids']);
 		$out_position=array_search($ques_time1,$input_array);
@@ -531,25 +544,31 @@ if(isset($_FILES['webcam'])){
 		$total_time +=$time_array[$out_position];
 
 
-		// actual time 
-		$get_ques_actual_time = $this->db->query("SELECT min_time,max_time from qbank_time_levels 
-		where qid='".$ques_time1."' and student_level='".$result['student_level']."'");
-		$get_ques_actual_time_res=$get_ques_actual_time->row_array();
+	$get_ques_actual_time=$this->db->query("SELECT min_time,max_time,student_level from qbank_time_levels where qid='".$ques_time1."' order by `student_level` desc");
 		
-		$out_actual_time += $get_ques_actual_time_res['min_time'];
-		$out_actual_time_max += $get_ques_actual_time_res['max_time'];
-		//echo $out_position;
-      // echo $get_ques_position_res['r_qids'];
-	//echo $ques_time1;	
+	
+	$get_ques_actual_time_res=$get_ques_actual_time->result_array();
+		
+
+		$e_out_actual_time += $get_ques_actual_time_res[0]['min_time'];
+		$e_out_actual_time_max += $get_ques_actual_time_res[0]['max_time'];
+
+		$i_out_actual_time += $get_ques_actual_time_res[1]['min_time'];
+		$i_out_actual_time_max += $get_ques_actual_time_res[1]['max_time'];
+
+		$b_out_actual_time += $get_ques_actual_time_res[2]['min_time'];
+		$b_out_actual_time_max += $get_ques_actual_time_res[2]['max_time'];
 	
 
 	}
 	
 	$percent=($skill_result1['score'] / $skill_result1['quescnt'])*100;
+	$unattmpt=round($get_assigned['qcnt'] - $skill_result1['score'] - $get_incorrect['incorr']);
+	if($skill_result1['score']==""){ $sscore="0"; } else { $sscore=$skill_result1['score'];}
 	
-	$results_id=$result['rid'].time().$k;
+	$results_id=$rid.time().$k;
 
-	$this->db->query("INSERT INTO `skill_result`(`result_id`, `skill_id`, `skill_type`, `quescnt`, `score`, `percent`, `actual_time_min`, `actual_time_max`, `time_taken`, `rid`, `student_level`, `gid`, `uid`) VALUES ($results_id,'".$skill_result1['skill_id']."','".$skill_result1['skill_type']."','".$skill_result1['quescnt']."','".$skill_result1['score']."','".$percent."','".$out_actual_time."','".$out_actual_time_max."','".$total_time."','".$result['rid']."','".$result['student_level']."','".$result['gid']."','".$result['uid']."')");
+	$this->db->query("INSERT INTO `skill_result`(`result_id`, `skill_id`, `skill_type`, `quescnt`, `score`, `percent`, `e_actual_time_min`, `e_actual_time_max`,`i_actual_time_min`,`i_actual_time_max`,`b_actual_time_min`,`b_actual_time_max`, `time_taken`, `rid`,  `gid`, `uid`,`incorrect`,`unattempted`) VALUES ($results_id,'".$Skill_ids1."','".$get_assigned['skill_type']."','".$get_assigned['qcnt']."','".$sscore."','".$percent."','".$e_out_actual_time."','".$e_out_actual_time_max."','".$i_out_actual_time."','".$i_out_actual_time_max."','".$b_out_actual_time."','".$b_out_actual_time_max."','".$total_time."','".$rid."','".$gid."','".$uid."','".$get_incorrect['incorr']."','".$unattmpt."')");
 	//echo $this->db->last_query; exit;
 
 
@@ -557,17 +576,21 @@ if(isset($_FILES['webcam'])){
 
 
 
-// category Report start aaru 16/1/2020
-
-$sql_skill_report = $this->db->query("SELECT a.cat_id,sum(a.`score_u`) as score,GROUP_CONCAT(`qid`) as questions,count(a.`qid`) as quescnt,b.category_name from savsoft_answers a, savsoft_category b  where a.cat_id=b.cid  and a.rid='".$result['rid']."' and a.skill_id='".$skill_result1['skill_id']."' group by a.`cat_id`");
-$res_skill_report=$sql_skill_report->result_array();
+// category Report start aaru 16/1/2020 modify 23/1
+$get_assigned_category=$this->result_model->get_assigned_category($current_quiz,$Skill_ids1);
 $i=1; 
-foreach($res_skill_report as $res_skill_report1)
+foreach($get_assigned_category as $res_skill_report1)
 {
+
+	
+	$cat_result1=$this->result_model->get_category_result($rid,$res_skill_report1['cat_id']);
+	$get_cat_incorrect=$this->result_model->get_cat_incorrect_answers($rid,$res_skill_report1['cat_id']);
+	$get_cat_assigned=$this->result_model->get_assigned_cat_questions($current_quiz,$res_skill_report1['cat_id']);
+
+
 ?>
 
-<tr>
-<td><a href="javascript:show_answer_skill1(<?php echo $skill_result1['skill_id'];?>);">+</a><?php echo $i;?></td>
+
 <td><?php echo $res_skill_report1['category_name'];?></td>
 <td><?php 
 
@@ -581,61 +604,19 @@ echo $res_skill_report1['score'];
 echo $percent."%"; 
 ?>
 </td> 
-<td><?php  $ques_time=explode(',',$res_skill_report1['questions']);
-//print_r($ques_time);
-$total_time=0;
-$out_actual_time=0;
-$out_actual_time_max=0;
-foreach($ques_time as $ques_time1)
-{
-$get_ques_position = $this->db->query("SELECT individual_time,r_qids from savsoft_result 
-where rid='".$result['rid']."'");
-$get_ques_position_res=$get_ques_position->row_array();
-$input_array=explode(',',$get_ques_position_res['r_qids']);
-$out_position=array_search($ques_time1,$input_array);
-
-$time_array=explode(',',$get_ques_position_res['individual_time']);
-$total_time +=$time_array[$out_position];
-
-
-// actual time 
-$get_ques_actual_time = $this->db->query("SELECT min_time,max_time from qbank_time_levels 
-where qid='".$ques_time1."' and student_level='".$result['student_level']."'");
-$get_ques_actual_time_res=$get_ques_actual_time->row_array();
-
-$out_actual_time += $get_ques_actual_time_res['min_time'];
-$out_actual_time_max += $get_ques_actual_time_res['max_time'];
-//echo $out_position;
-// echo $get_ques_position_res['r_qids'];
-//echo $ques_time1;	
-
-
-}
-echo $out_actual_time;
-// insert query
-
-$this->db->query("INSERT INTO `category_result`(`result_id`, `cat_id`, `cat_type`, `quescnt`, `score`, `percent`, `actual_time_min`, `actual_time_max`, `time_taken`, `rid`, `student_level`, `gid`, `uid`) VALUES ($results_id,'".$res_skill_report1['cat_id']."','".$res_skill_report1['category_name']."','".$res_skill_report1['quescnt']."','".$res_skill_report1['score']."','".$percent."','".$out_actual_time."','".$out_actual_time_max."','".$total_time."','".$result['rid']."','".$result['student_level']."','".$result['gid']."','".$result['uid']."')");
-
-// category report end
-
-
-// sub skill report start - aaru
-
-$sql_skill_report = $this->db->query("SELECT a.sub_skill_id,sum(a.`score_u`) as score,GROUP_CONCAT(`qid`) as questions,count(a.`qid`) as quescnt,b.sub_skill_name from savsoft_answers a, savsoft_skills b where a.sub_skill_id=b.sub_skill_id and a.skill_id='".$skill_result1['skill_id']."' and a.rid='".$result['rid']."' group by a.`sub_skill_id`");
-$res_skill_report=$sql_skill_report->result_array();
-foreach($res_skill_report as $res_skill_report1)
-{
-
-
-	$percent=($res_skill_report1['score'] / $res_skill_report1['quescnt'])*100;
-	$ques_time=explode(',',$res_skill_report1['questions']);
+<td><?php $ques_time=explode(',',$get_cat_assigned['qs1']);
+	//print_r($ques_time);
 	$total_time=0;
-	$out_actual_time=0;
-	$out_actual_time_max=0;
-	foreach($ques_time as $ques_time1)
+	$e_out_actual_time=0;
+	$i_out_actual_time=0;
+	$b_out_actual_time=0;
+	$e_out_actual_time_max=0;
+	$i_out_actual_time_max=0;
+	$b_out_actual_time_max=0;
+foreach($ques_time as $ques_time1)
 	{
 		$get_ques_position = $this->db->query("SELECT individual_time,r_qids from savsoft_result 
-		where rid='".$result['rid']."'");
+		where rid='".$rid."'");
 		$get_ques_position_res=$get_ques_position->row_array();
 		$input_array=explode(',',$get_ques_position_res['r_qids']);
 		$out_position=array_search($ques_time1,$input_array);
@@ -644,22 +625,89 @@ foreach($res_skill_report as $res_skill_report1)
 		$total_time +=$time_array[$out_position];
 
 
-		// actual time 
-		$get_ques_actual_time = $this->db->query("SELECT min_time,max_time from qbank_time_levels 
-		where qid='".$ques_time1."' and student_level='".$result['student_level']."'");
-		$get_ques_actual_time_res=$get_ques_actual_time->row_array();
+	$get_ques_actual_time=$this->db->query("SELECT min_time,max_time,student_level from qbank_time_levels where qid='".$ques_time1."' order by `student_level` desc");
 		
-		$out_actual_time += $get_ques_actual_time_res['min_time'];
-		$out_actual_time_max += $get_ques_actual_time_res['max_time'];
-		//echo $out_position;
-      // echo $get_ques_position_res['r_qids'];
-	//echo $ques_time1;	
+	
+	$get_ques_actual_time_res=$get_ques_actual_time->result_array();
+		
+
+		$e_out_actual_time += $get_ques_actual_time_res[0]['min_time'];
+		$e_out_actual_time_max += $get_ques_actual_time_res[0]['max_time'];
+
+		$i_out_actual_time += $get_ques_actual_time_res[1]['min_time'];
+		$i_out_actual_time_max += $get_ques_actual_time_res[1]['max_time'];
+
+		$b_out_actual_time += $get_ques_actual_time_res[2]['min_time'];
+		$b_out_actual_time_max += $get_ques_actual_time_res[2]['max_time'];
 	
 
 	}
-	echo $out_actual_time;
+//echo $out_actual_time;
+// insert query
+if($cat_result1['score']==""){ $sscore1="0"; } else { $sscore1=$cat_result1['score'];}
+$percent1=round(($cat_result1['score'] / $cat_result1['quescnt'])*100);
+$unattm=round($get_cat_assigned['qcnt'] - $cat_result1['score'] - $get_cat_incorrect['incorr']);
 
-	$this->db->query("INSERT INTO `sub_skill_result`(`result_id`, `sub_skill_id`, `sub_skill_name`, `quescnt`, `score`, `percent`, `actual_time_min`, `actual_time_max`, `time_taken`, `rid`, `student_level`, `gid`, `uid`) VALUES ($results_id,'".$res_skill_report1['sub_skill_id']."','".$res_skill_report1['sub_skill_name']."','".$res_skill_report1['quescnt']."','".$res_skill_report1['score']."','".$percent."','".$out_actual_time."','".$out_actual_time_max."','".$total_time."','".$result['rid']."','".$result['student_level']."','".$result['gid']."','".$result['uid']."')");
+$this->db->query("INSERT INTO `category_result`(`result_id`, `cat_id`, `cat_type`, `quescnt`, `score`, `percent`, `e_actual_time_min`, `e_actual_time_max`,`i_actual_time_min`,`i_actual_time_max`,`b_actual_time_min`,`b_actual_time_max`, `time_taken`, `rid`, `gid`, `uid`,`incorrect`,`unattempted`) VALUES ($results_id,'".$res_skill_report1['cat_id']."','".$get_cat_assigned['category_name']."','".$get_cat_assigned['qcnt']."','".$sscore1."','".$percent1."','".$e_out_actual_time."','".$e_out_actual_time_max."','".$i_out_actual_time."','".$i_out_actual_time_max."','".$b_out_actual_time."','".$b_out_actual_time_max."','".$total_time."','".$rid."','".$gid."','".$uid."','".$get_cat_incorrect['incorr']."','".$unattm."')");
+
+// category report end
+
+
+// sub skill report start - aaru
+
+$get_assigned_subskill=$this->result_model->get_assigned_subskill($current_quiz,$Skill_ids1);
+
+foreach($get_assigned_subskill as $res_skill_report1)
+	{
+		$subskill_result1=$this->result_model->get_subskill_result1($rid,$res_skill_report1['sub_skill_id']);
+		$get_subskill_incorrect=$this->result_model->get_subskill_incorrect($rid,$res_skill_report1['sub_skill_id']);
+		$get_subskill_assigned=$this->result_model->get_subskill_assigned($current_quiz,$res_skill_report1['sub_skill_id']);
+
+
+ $ques_time=explode(',',$get_subskill_assigned['qs1']);
+ $total_time=0;
+	$e_out_actual_time=0;
+	$i_out_actual_time=0;
+	$b_out_actual_time=0;
+	$e_out_actual_time_max=0;
+	$i_out_actual_time_max=0;
+	$b_out_actual_time_max=0;
+	foreach($ques_time as $ques_time1)
+	{
+		$get_ques_position = $this->db->query("SELECT individual_time,r_qids from savsoft_result 
+		where rid='".$rid."'");
+		$get_ques_position_res=$get_ques_position->row_array();
+		$input_array=explode(',',$get_ques_position_res['r_qids']);
+		$out_position=array_search($ques_time1,$input_array);
+
+		$time_array=explode(',',$get_ques_position_res['individual_time']);
+		$total_time +=$time_array[$out_position];
+
+
+	$get_ques_actual_time=$this->db->query("SELECT min_time,max_time,student_level from qbank_time_levels where qid='".$ques_time1."' order by `student_level` desc");
+		
+	
+	$get_ques_actual_time_res=$get_ques_actual_time->result_array();
+		
+
+		$e_out_actual_time += $get_ques_actual_time_res[0]['min_time'];
+		$e_out_actual_time_max += $get_ques_actual_time_res[0]['max_time'];
+
+		$i_out_actual_time += $get_ques_actual_time_res[1]['min_time'];
+		$i_out_actual_time_max += $get_ques_actual_time_res[1]['max_time'];
+
+		$b_out_actual_time += $get_ques_actual_time_res[2]['min_time'];
+		$b_out_actual_time_max += $get_ques_actual_time_res[2]['max_time'];
+	
+
+	}
+	//echo $out_actual_time;
+
+	if($subskill_result1['score']==""){ $sscore2="0"; } else {  $sscore2=$subskill_result1['score'];}
+	$unat=round($get_subskill_assigned['qcnt'] - $subskill_result1['score'] - $get_subskill_incorrect['incorr']);
+	$percent3=($subskill_result1['score'] / $subskill_result1['quescnt'])*100;
+
+	$this->db->query("INSERT INTO `sub_skill_result`(`result_id`, `sub_skill_id`, `sub_skill_name`, `quescnt`, `score`, `percent`, `e_actual_time_min`, `e_actual_time_max`,`i_actual_time_min`,`i_actual_time_max`,`b_actual_time_min`,`b_actual_time_max`,`time_taken`, `rid`, `gid`, `uid`,`incorrect`,`unattempted`) VALUES ($results_id,'".$res_skill_report1['sub_skill_id']."','".$get_subskill_assigned['sub_skill_name']."','".$get_subskill_assigned['qcnt']."','".$sscore2."','".$percent3."','".$e_out_actual_time."','".$e_out_actual_time_max."','".$i_out_actual_time."','".$i_out_actual_time_max."','".$b_out_actual_time."','".$b_out_actual_time_max."','".$total_time."','".$rid."','".$gid."','".$uid."','".$get_subskill_incorrect['incorr']."','".$unat."')");
 
 }
 // subskill report end 
